@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "id": "aivon-python-service",
+  "version": "1.0.0",
+  "name": "Aivon Python Service",
+  "description": "A consistent backend-first service skeleton with a direct backend/src layout.",
+  "tags": [
+    "python",
+    "fastapi",
+    "aivon",
+    "organization"
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Service name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    },
+    {
+      "name": "packageName",
+      "prompt": "Python package name",
+      "type": "string",
+      "default": "{{projectName}}",
+      "transform": "snake"
+    },
+    {
+      "name": "includeDocker",
+      "prompt": "Include Dockerfile",
+      "type": "boolean",
+      "default": true
+    }
+  ],
+  "entries": [
+    {
+      "type": "directory",
+      "path": "backend/src/api/routers"
+    },
+    {
+      "type": "directory",
+      "path": "backend/src/api/schemas"
+    },
+    {
+      "type": "directory",
+      "path": "backend/src/application/commands"
+    },
+    {
+      "type": "directory",
+      "path": "backend/src/application/queries"
+    },
+    {
+      "type": "directory",
+      "path": "backend/src/application/services"
+    },
+    {
+      "type": "directory",
+      "path": "backend/src/domain/entities"
+    },
+    {
+      "type": "directory",
+      "path": "backend/src/domain/value_objects"
+    },
+    {
+      "type": "directory",
+      "path": "backend/src/domain/policies"
+    },
+    {
+      "type": "directory",
+      "path": "backend/src/domain/events"
+    },
+    {
+      "type": "directory",
+      "path": "backend/src/infrastructure/adapters"
+    },
+    {
+      "type": "directory",
+      "path": "backend/src/infrastructure/persistence"
+    },
+    {
+      "type": "directory",
+      "path": "backend/src/interfaces"
+    },
+    {
+      "type": "directory",
+      "path": "backend/src/observability"
+    },
+    {
+      "type": "directory",
+      "path": "backend/src/shared"
+    },
+    {
+      "type": "directory",
+      "path": "backend/src/workers"
+    },
+    {
+      "type": "directory",
+      "path": "backend/tests/unit"
+    },
+    {
+      "type": "directory",
+      "path": "backend/tests/integration"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": "backend/pyproject.toml",
+      "source": "template/pyproject.toml"
+    },
+    {
+      "type": "file",
+      "path": "backend/src/main.py",
+      "source": "template/main.py"
+    },
+    {
+      "type": "file",
+      "path": "backend/src/api/routers/health.py",
+      "source": "template/health.py"
+    },
+    {
+      "type": "file",
+      "path": "backend/Dockerfile",
+      "source": "template/Dockerfile",
+      "when": {
+        "variable": "includeDocker",
+        "equals": true
+      }
+    }
+  ],
+  "metadata": {
+    "language": "Python",
+    "framework": "FastAPI",
+    "architecture": "Clean/Hexagonal",
+    "organization": "Aivon"
+  }
+}

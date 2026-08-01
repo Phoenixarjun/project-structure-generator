@@ -1,0 +1,64 @@
+{
+  "name": "@naresh007/project-structure-generator",
+  "version": "0.1.0",
+  "description": "Deterministic project scaffolding from reusable filesystem-based blueprints.",
+  "type": "module",
+  "bin": {
+    "structgen": "./dist/src/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    }
+  },
+  "files": [
+    "dist/src",
+    "presets",
+    "schema",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "clean": "node -e \"import('node:fs').then(fs=>fs.rmSync('dist',{recursive:true,force:true}))\"",
+    "build": "npm run clean && tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test dist/tests/*.test.js",
+    "test:coverage": "npm run build && node --experimental-test-coverage --test dist/tests/*.test.js",
+    "dev": "npm run build && node dist/src/cli.js",
+    "prepack": "npm test"
+  },
+  "engines": {
+    "node": ">=24.11.0",
+    "npm": ">=11.0.0 <13"
+  },
+  "packageManager": "npm@11.19.0",
+  "volta": {
+    "node": "24.18.1",
+    "npm": "11.19.0"
+  },
+  "keywords": [
+    "scaffold",
+    "generator",
+    "project-structure",
+    "cli",
+    "templates",
+    "architecture",
+    "blueprints"
+  ],
+  "author": "Naresh B A",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PhoenixArjun/project-structure-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PhoenixArjun/project-structure-generator/issues"
+  },
+  "homepage": "https://github.com/PhoenixArjun/project-structure-generator#readme",
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "6.0.3"
+  }
+}

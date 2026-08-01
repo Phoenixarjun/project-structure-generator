@@ -1,0 +1,9 @@
+{
+  "vaults": [
+    ".structgen/vault"
+  ],
+  "defaultPreset": "aivon-python-service",
+  "variables": {
+    "includeDocker": true
+  }
+}

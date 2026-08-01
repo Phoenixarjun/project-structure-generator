@@ -1,0 +1,252 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/PhoenixArjun/project-structure-generator/schema/blueprint.schema.json",
+  "title": "Project Structure Generator Blueprint",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "version",
+    "name",
+    "description",
+    "variables",
+    "entries"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "variables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "prompt",
+          "type"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "enum": [
+              "string",
+              "boolean",
+              "select"
+            ]
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "default": {
+            "type": [
+              "string",
+              "number",
+              "boolean",
+              "null"
+            ]
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "type": [
+                "string",
+                "number",
+                "boolean",
+                "null"
+              ]
+            }
+          },
+          "transform": {
+            "enum": [
+              "identity",
+              "kebab",
+              "snake",
+              "camel",
+              "pascal",
+              "constant",
+              "java-package",
+              "java-path"
+            ]
+          },
+          "internal": {
+            "type": "boolean"
+          },
+          "sensitive": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "type",
+              "path"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "directory"
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "when": {
+                "$ref": "#/$defs/condition"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "type",
+              "path"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "file"
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1
+              },
+              "content": {
+                "type": "string"
+              },
+              "template": {
+                "type": "boolean"
+              },
+              "mode": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 511
+              },
+              "when": {
+                "$ref": "#/$defs/condition"
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "source"
+                ],
+                "not": {
+                  "required": [
+                    "content"
+                  ]
+                }
+              },
+              {
+                "required": [
+                  "content"
+                ],
+                "not": {
+                  "required": [
+                    "source"
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "language": {
+          "type": "string"
+        },
+        "framework": {
+          "type": "string"
+        },
+        "architecture": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "documentation": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "condition": {
+      "type": "object",
+      "required": [
+        "variable"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "variable": {
+          "type": "string"
+        },
+        "equals": {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ]
+        },
+        "notEquals": {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ]
+        },
+        "exists": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

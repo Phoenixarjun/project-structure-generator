@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "id": "java-spring-layered",
+  "version": "1.0.0",
+  "name": "Java Spring Boot Layered",
+  "description": "A Gradle Spring Boot service organized into controller, DTO, model, repository, service, implementation, and exception packages.",
+  "tags": [
+    "java",
+    "spring-boot",
+    "gradle",
+    "layered"
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    },
+    {
+      "name": "artifactId",
+      "prompt": "Gradle artifact id",
+      "type": "string",
+      "default": "{{projectName}}",
+      "transform": "kebab"
+    },
+    {
+      "name": "groupId",
+      "prompt": "Java group id",
+      "type": "string",
+      "default": "com.example",
+      "transform": "java-package"
+    },
+    {
+      "name": "basePackage",
+      "prompt": "Java base package",
+      "type": "string",
+      "default": "{{groupId}}.{{artifactId}}",
+      "transform": "java-package"
+    },
+    {
+      "name": "basePackagePath",
+      "prompt": "Java package path",
+      "type": "string",
+      "default": "{{basePackage}}",
+      "transform": "java-path",
+      "internal": true
+    },
+    {
+      "name": "applicationClass",
+      "prompt": "Application class",
+      "type": "string",
+      "default": "{{artifactId}}",
+      "transform": "pascal",
+      "internal": true
+    }
+  ],
+  "entries": [
+    {
+      "type": "directory",
+      "path": "src/main/java/{{basePackagePath}}/controller"
+    },
+    {
+      "type": "directory",
+      "path": "src/main/java/{{basePackagePath}}/dto"
+    },
+    {
+      "type": "directory",
+      "path": "src/main/java/{{basePackagePath}}/model"
+    },
+    {
+      "type": "directory",
+      "path": "src/main/java/{{basePackagePath}}/repository"
+    },
+    {
+      "type": "directory",
+      "path": "src/main/java/{{basePackagePath}}/service/impl"
+    },
+    {
+      "type": "directory",
+      "path": "src/main/java/{{basePackagePath}}/exception"
+    },
+    {
+      "type": "directory",
+      "path": "src/main/resources"
+    },
+    {
+      "type": "directory",
+      "path": "src/test/java/{{basePackagePath}}"
+    },
+    {
+      "type": "file",
+      "path": "settings.gradle.kts",
+      "source": "template/settings.gradle.kts"
+    },
+    {
+      "type": "file",
+      "path": "build.gradle.kts",
+      "source": "template/build.gradle.kts"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": "src/main/java/{{basePackagePath}}/{{applicationClass}}Application.java",
+      "source": "template/Application.java"
+    },
+    {
+      "type": "file",
+      "path": "src/main/java/{{basePackagePath}}/controller/HealthController.java",
+      "source": "template/HealthController.java"
+    },
+    {
+      "type": "file",
+      "path": "src/main/java/{{basePackagePath}}/service/HealthService.java",
+      "source": "template/HealthService.java"
+    },
+    {
+      "type": "file",
+      "path": "src/main/java/{{basePackagePath}}/service/impl/HealthServiceImpl.java",
+      "source": "template/HealthServiceImpl.java"
+    },
+    {
+      "type": "file",
+      "path": "src/main/resources/application.yml",
+      "source": "template/application.yml"
+    },
+    {
+      "type": "file",
+      "path": "src/test/java/{{basePackagePath}}/{{applicationClass}}ApplicationTests.java",
+      "source": "template/ApplicationTests.java"
+    }
+  ],
+  "metadata": {
+    "language": "Java",
+    "framework": "Spring Boot",
+    "architecture": "Layered",
+    "organization": "Package by layer"
+  }
+}
