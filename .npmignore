@@ -1,0 +1,7 @@
+presets/**/.gradle/
+presets/**/build/
+presets/**/__pycache__/
+presets/**/.pytest_cache/
+presets/**/node_modules/
+presets/**/.structgen.json
+*.log

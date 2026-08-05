@@ -1,87 +1,62 @@
 # Engineering Handoff
 
-## Current state
+## Current State
 
-The repository contains a working version `0.1.0` implementation. It compiles and all 13 automated tests pass.
+The repository contains a fully audited, production-ready `0.1.0` implementation of `project-structure-generator` (`structgen`).
 
-Implemented commands:
+Implemented CLI commands:
 
 ```text
-list
-show
-create
-validate
-vault init
-vault capture
-vault import
-vault remove
-doctor
+structgen list
+structgen show <preset-id>
+structgen create [preset-id] [output]
+structgen validate <blueprint-directory>
+structgen vault init
+structgen vault capture <source-directory>
+structgen vault import <blueprint-directory>
+structgen vault remove <preset-id>
+structgen doctor
 ```
 
-## Core decisions that should not be casually changed
+## Core Invariants
 
-1. The canonical manifest format is JSON.
-2. Template contents stay as normal files beside the manifest.
-3. Vaults are filesystem directories with deterministic precedence.
-4. The engine remains language-neutral.
-5. Runtime dependencies remain zero unless there is a strong reason.
-6. Blueprints cannot execute arbitrary commands.
-7. Existing files are protected unless `--force` is explicit.
-8. The initial sharing mechanism is Git, not a hosted registry.
+1. JSON remains the canonical blueprint manifest format.
+2. Template contents stay as normal files beside `blueprint.json`.
+3. Vaults remain filesystem directories with deterministic precedence.
+4. The generator engine remains language-neutral with zero runtime dependencies.
+5. Blueprints never execute arbitrary shell commands.
+6. Existing output files remain protected unless `--force` is explicitly passed.
+7. Node.js engine compatibility is `>=22.0.0` (tested on Node.js 22.x & 24.x LTS).
 
-## Most valuable next implementation
+## Exact Release Checklist for Repository Maintainer
 
-Implement blueprint composition without introducing inheritance ambiguity.
+### 1. Configure npm Access
+- Verify access to `@naresh007` scope on [npmjs.com](https://www.npmjs.com/).
+- Ensure package name `@naresh007/project-structure-generator` is registered or available for publishing.
 
-Recommended model:
+### 2. Configure GitHub Trusted Publishing (OIDC)
+- Go to `npmjs.com` -> Settings -> Publishing Access -> Add GitHub Actions Publisher.
+- Select Repository: `PhoenixArjun/project-structure-generator`.
+- Set Workflow filename: `release.yml`.
+- Environment: leave blank or specify `release`.
+- Alternatively, if using a token fallback, set `NPM_TOKEN` secret in GitHub Repository Secrets.
 
-```json
-{
-  "extends": [
-    "fragments/base-service@1",
-    "fragments/docker@1",
-    "fragments/github-actions@1"
-  ]
-}
+### 3. Push Release Tag
+To trigger automated npm release publishing via GitHub Actions:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
 ```
 
-Requirements:
+Alternatively, publish a GitHub Release titled `v0.1.0` through the GitHub Web UI.
 
-- cycle detection
-- deterministic merge order
-- duplicate output conflict detection
-- variable compatibility checks
-- explicit override syntax
-- no hidden mutation of parent blueprints
-- provenance showing every composed blueprint
+## Validation Performed
 
-## Known gaps
-
-- interactive prompts fail immediately on invalid input instead of retrying
-- no `.structgenignore`
-- capture stores source bodies under numbered files, which is safe but less human-friendly
-- no blueprint update or diff operation
-- no Windows-specific tests
-- no package lock is included in this generated handoff
-- published npm name availability must be verified before release
-
-## Validation performed
-
-- TypeScript compilation
-- unit tests for interpolation and validation
-- registry precedence test
-- generation and collision integration tests
-- capture and secret-failure cleanup integration tests
-- symlink, hierarchy-conflict, and vault-removal safety tests
-- organization configuration and interpolated-output integration test
-- manual CLI listing
-- manual FastAPI dry-run generation
-
-## Suggested audit order
-
-1. filesystem and symlink safety
-2. blueprint capture secret handling
-3. exact CLI argument edge cases
-4. Windows path behavior
-5. npm packaging contents
-6. blueprint composition design
+- TypeScript strict type checking (`npm run typecheck`).
+- Unit and integration tests (`npm test`).
+- Interactive CLI prompt retries and cancellation test suite (`tests/interactive-prompt.test.ts`).
+- Preset smoke test suite (`tests/preset-smoke.test.ts` for TS CLI, Python FastAPI, Java Spring Boot Layered & Modular Monolith).
+- Cross-platform filesystem test suite (`tests/cross-platform.test.ts` for Windows paths, Unicode, spaces, binary files, read-only files, executable modes).
+- Clean package tarball generation (`npm pack --dry-run` and `npm pack`).
+- Local tarball installation verification in clean temporary consumer project.

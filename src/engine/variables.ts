@@ -3,7 +3,7 @@ import type { BlueprintVariable, Primitive } from "../core/types.js";
 import { interpolate, transformValue } from "./interpolate.js";
 
 export interface VariablePrompter {
-  input(prompt: string, defaultValue?: string): Promise<string>;
+  input(prompt: string, defaultValue?: string, required?: boolean): Promise<string>;
   confirm(prompt: string, defaultValue?: boolean): Promise<boolean>;
   select(prompt: string, choices: Primitive[], defaultValue?: Primitive): Promise<Primitive>;
 }
@@ -82,16 +82,19 @@ export async function resolveVariables(
     }
 
     const defaultValue = resolveDefault(variable, values);
-    if (defaultValue !== undefined) {
-      values[variable.name] = defaultValue;
-      continue;
-    }
-
     if (variable.internal) {
+      if (defaultValue !== undefined) {
+        values[variable.name] = defaultValue;
+        continue;
+      }
       throw new StructgenError("MISSING_VARIABLE", `Internal variable ${variable.name} requires a default`);
     }
 
     if (!interactive || !prompter) {
+      if (defaultValue !== undefined) {
+        values[variable.name] = defaultValue;
+        continue;
+      }
       if (variable.required !== false) {
         throw new StructgenError("MISSING_VARIABLE", `Missing required variable: ${variable.name}`);
       }
@@ -100,19 +103,19 @@ export async function resolveVariables(
     }
 
     if (variable.type === "boolean") {
-      values[variable.name] = await prompter.confirm(variable.prompt, false);
+      const defaultBool = typeof defaultValue === "boolean" ? defaultValue : false;
+      values[variable.name] = await prompter.confirm(variable.prompt, defaultBool);
       continue;
     }
 
     if (variable.type === "select") {
-      values[variable.name] = await prompter.select(variable.prompt, variable.choices ?? []);
+      values[variable.name] = await prompter.select(variable.prompt, variable.choices ?? [], defaultValue);
       continue;
     }
 
-    const response = await prompter.input(variable.prompt);
-    if (variable.required !== false && response.trim() === "") {
-      throw new StructgenError("MISSING_VARIABLE", `${variable.name} cannot be empty`);
-    }
+    const defaultStr = defaultValue !== undefined ? String(defaultValue) : undefined;
+    const required = variable.required !== false && defaultStr === undefined;
+    const response = await prompter.input(variable.prompt, defaultStr, required);
     values[variable.name] = coerce(variable, response);
   }
 

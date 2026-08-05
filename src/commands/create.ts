@@ -37,7 +37,8 @@ export async function runCreate(options: CreateOptions): Promise<void> {
     config
   });
 
-  const presetId = options.presetId ?? config?.config.defaultPreset ?? await choosePreset(registry.records, options.interactive);
+  const interactive = options.interactive && !options.json;
+  const presetId = options.presetId ?? config?.config.defaultPreset ?? await choosePreset(registry.records, interactive);
   const record = findBlueprint(registry, presetId);
 
   if (!record) {
@@ -49,8 +50,8 @@ export async function runCreate(options: CreateOptions): Promise<void> {
     ...options.values
   };
 
-  const prompter = options.interactive ? new TerminalPrompter() : undefined;
-  const values = await resolveVariables(record.blueprint.variables, mergedValues, options.interactive, prompter);
+  const prompter = interactive ? new TerminalPrompter() : undefined;
+  const values = await resolveVariables(record.blueprint.variables, mergedValues, interactive, prompter);
   const configuredOutput = options.output ?? config?.config.output;
   const defaultOutput = typeof values.projectName === "string" && values.projectName !== ""
     ? values.projectName

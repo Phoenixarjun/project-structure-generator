@@ -1,80 +1,120 @@
 # Project Structure Generator
 
-A deterministic CLI for generating consistent project structures from reusable filesystem-based blueprints.
+A deterministic TypeScript CLI for generating consistent project structures from reusable filesystem-based blueprints.
 
-The package is intentionally not an AI system and not a general-purpose code generator. Its job is to remove repeated structural decisions, preserve organization-level conventions, and make the same approved skeleton reusable across repositories.
+The package is intentionally not an AI system and not a general-purpose code generator. Its job is to remove repeated structural decisions, preserve organization-level conventions, and make approved skeletons reusable across repositories.
 
-## Why this exists
+> **Target vs Runtime Note**: Python, Java, and TypeScript are supported generation targets. The `structgen` CLI itself is written entirely in TypeScript and runs on Node.js with zero runtime dependencies.
 
-Framework starters solve dependency selection. Generic template engines require every team to invent its own conventions. Project Structure Generator sits between them:
+## Features
 
-- curated built-in structures provide immediate value
-- workspace vaults let a repository or organization override those structures
-- user vaults preserve personal templates across projects
-- captured projects can become reusable blueprints
-- generation is deterministic, inspectable, and safe by default
+- **Built-in presets**: Immediate scaffolding for TypeScript CLI, Python FastAPI (Clean Architecture), and Java Spring Boot (Layered & Modular Monolith).
+- **Filesystem vaults**: Hierarchical precedence (explicit `--vault` > `structgen.config.json` > workspace vault > user vault > built-in presets).
+- **Atomic capture**: Capture existing project trees into reusable blueprints with automatic secret detection.
+- **Safety by default**: Path traversal prevention, symlink safety, overwrite protection, and no arbitrary shell hooks.
+- **Deterministic & CI friendly**: Dry-run generation preview, explicit variable setting, and structured JSON output mode.
 
-## Runtime
+## Node.js Support Policy
 
-- Node.js 24 LTS
-- npm 11
-- TypeScript 6 for development
-- zero runtime dependencies
+- **Node.js**: `>= 22.0.0` (Tested on Node.js 22.x and 24.x LTS)
+- **Zero Runtime Dependencies**
 
-## Install
+## Installation & Usage
+
+Run directly without installation:
+
+```bash
+npx @naresh007/project-structure-generator create python-fastapi-clean ./my-service \
+  --set projectName=my-service \
+  --interactive=false
+```
+
+Install globally via npm:
 
 ```bash
 npm install --global @naresh007/project-structure-generator
 ```
 
-During local development:
-
-```bash
-npm install
-npm run build
-node dist/src/cli.js list
-```
-
-## Quick start
-
-List available structures:
+Once installed globally:
 
 ```bash
 structgen list
 ```
 
-Generate a FastAPI service without interactive questions:
+During local development:
 
 ```bash
-structgen create python-fastapi-clean ./billing-runtime \
-  --set projectName=billing-runtime \
+npm ci
+npm run build
+node dist/src/cli.js list
+```
+
+## Quick Start
+
+### 1. List available presets
+
+```bash
+structgen list
+```
+
+Outputs human-readable preset listing or structured JSON with `--json`:
+
+```bash
+structgen list --json
+```
+
+### 2. Generate a project
+
+Generate a FastAPI service non-interactively:
+
+```bash
+structgen create python-fastapi-clean ./services/billing \
+  --set projectName=billing-service \
   --interactive=false
 ```
 
-Preview without writing:
+Preview changes without writing to disk:
 
 ```bash
-structgen create java-spring-layered ./orders \
+structgen create java-spring-layered ./services/orders \
   --set projectName=orders \
   --dry-run \
   --interactive=false
 ```
 
-Inspect a preset:
+Overwrite existing files if explicitly intended:
+
+```bash
+structgen create typescript-cli-modular ./my-cli \
+  --set projectName=my-cli \
+  --force \
+  --interactive=false
+```
+
+### 3. Inspect a blueprint
 
 ```bash
 structgen show python-fastapi-clean
 ```
 
-Validate a custom blueprint:
+### 4. Validate a custom blueprint
 
 ```bash
 structgen validate ./.structgen/vault/company-fastapi
 ```
 
-## Vault model
+## Built-In Presets
 
-A vault is an ordinary directory containing one or more blueprint directories.
+| ID | Language | Framework | Architecture / Description |
+|---|---|---|---|
+| `typescript-cli-modular` | TypeScript | Node.js | Dependency-light modular CLI project with build, test, and typecheck tooling |
+| `python-fastapi-clean` | Python | FastAPI | Clean Architecture layout (API, application, domain, infrastructure, observability, shared) |
+| `java-spring-layered` | Java | Spring Boot | Layered Gradle architecture (controller, dto, model, repository, service, impl) with Gradle wrapper |
+| `java-spring-feature-modular` | Java | Spring Boot | Feature-oriented modular-monolith starting point with Gradle wrapper |
+
+## Vault Model & Precedence
+
+A vault is a filesystem directory containing blueprint directories:
 
 ```text
 .structgen/
@@ -86,32 +126,25 @@ A vault is an ordinary directory containing one or more blueprint directories.
             └── src/
 ```
 
-Blueprint precedence is deterministic:
+Blueprint precedence is strictly deterministic:
 
-1. paths passed with `--vault`
-2. vault paths declared in `structgen.config.json`
-3. the current workspace vault
-4. the user vault
-5. built-in presets
+1. Explicit `--vault PATH` flags passed on the CLI
+2. Vault paths declared in `structgen.config.json`
+3. Current workspace vault (`.structgen/vault`)
+4. User vault (`~/.structgen/vault`)
+5. Built-in presets
 
-A higher-precedence blueprint can reuse the same ID to override a lower-precedence blueprint. This is how an organization can replace `python-fastapi-clean` with its approved internal structure without changing developer commands.
+Higher-precedence blueprints override lower-precedence blueprints with matching IDs.
 
-## Initialize an organization workspace
+## Workspace & Organization Configuration
+
+Initialize a workspace vault and `structgen.config.json`:
 
 ```bash
 structgen vault init --scope workspace --default-preset company-fastapi
 ```
 
-This creates:
-
-```text
-structgen.config.json
-.structgen/vault/
-```
-
-Commit both to Git. Every repository using that configuration resolves the same template.
-
-Example configuration:
+Example `structgen.config.json`:
 
 ```json
 {
@@ -124,141 +157,89 @@ Example configuration:
 }
 ```
 
-## Capture an existing project
+Commit `structgen.config.json` and `.structgen/` to source control so team members inherit identical defaults.
 
-Turn a known-good project into a reusable blueprint:
+## Project Capture Workflow
 
-```bash
-structgen vault capture ./billing-runtime \
-  --id company-fastapi \
-  --name "Company FastAPI Service" \
-  --scope workspace
-```
-
-By default, the source directory name becomes `{{projectName}}` inside captured paths and UTF-8 files.
-
-Add explicit replacements:
+Convert an existing project into a reusable blueprint:
 
 ```bash
-structgen vault capture ./billing-runtime \
+structgen vault capture ./services/billing-runtime \
   --id company-fastapi \
+  --name "Company FastAPI Skeleton" \
   --replace billing-runtime=projectName:kebab \
   --replace billing_runtime=packageName:snake \
   --scope workspace
 ```
 
-Capture excludes source-control metadata, dependency directories, build output, virtual environments, local environment files, private keys, and common secret-bearing files. Potential secrets found in text content stop capture unless `--allow-sensitive` is passed intentionally.
+Capture automatically filters dependency folders, build output, virtual environments, `.env` files, and private keys. If potential secrets are found, capture stops unless `--allow-sensitive` is supplied.
 
-## Import a blueprint
+## Non-Interactive & CI Usage
 
-```bash
-structgen vault import ../shared-blueprints/company-fastapi --scope workspace
-```
-
-## Remove a blueprint
+For automated environments, pass `--interactive=false` and provide all variables via `--set`:
 
 ```bash
-structgen vault remove company-fastapi --scope workspace --yes
+structgen create python-fastapi-clean ./billing \
+  --set projectName=billing \
+  --set includeDocker=true \
+  --interactive=false \
+  --json
 ```
 
-## Built-in presets
-
-| ID | Purpose |
-|---|---|
-| `typescript-cli-modular` | Dependency-light modular TypeScript CLI |
-| `python-fastapi-clean` | FastAPI service with API, application, domain, infrastructure, observability, and shared boundaries |
-| `java-spring-layered` | Conventional Spring Boot controller/DTO/model/repository/service/implementation structure |
-| `java-spring-feature-modular` | Feature-oriented Spring Boot modular-monolith starting point |
-
-## Blueprint format
-
-Every blueprint uses `blueprint.json` as its machine-readable contract. Template bodies remain ordinary files.
+Output when `--json` is active:
 
 ```json
 {
-  "schemaVersion": 1,
-  "id": "company-fastapi",
-  "version": "1.0.0",
-  "name": "Company FastAPI Service",
-  "description": "Approved service skeleton",
-  "variables": [
-    {
-      "name": "projectName",
-      "prompt": "Project name",
-      "type": "string",
-      "required": true,
-      "transform": "kebab"
-    },
-    {
-      "name": "packageName",
-      "prompt": "Python package name",
-      "type": "string",
-      "default": "{{projectName}}",
-      "transform": "snake"
-    }
-  ],
-  "entries": [
-    {
-      "type": "directory",
-      "path": "src/{{packageName}}"
-    },
-    {
-      "type": "file",
-      "path": "README.md",
-      "source": "template/README.md"
-    }
-  ]
+  "blueprint": "python-fastapi-clean",
+  "targetDirectory": "/workspace/billing",
+  "variables": {
+    "projectName": "billing",
+    "packageName": "billing",
+    "includeDocker": true
+  },
+  "result": {
+    "dryRun": false,
+    "createdDirectories": [
+      "/workspace/billing/src/billing/api"
+    ],
+    "createdFiles": [
+      "/workspace/billing/pyproject.toml"
+    ],
+    "overwrittenFiles": []
+  }
 }
 ```
 
-The JSON Schema is available at `schema/blueprint.schema.json`.
+## Security & Safety Guarantees
 
-## Safety guarantees
+- **Path Containment**: Output files cannot write outside the target directory.
+- **Symlink Protection**: Filesystem writes through symlinked ancestors are rejected.
+- **Overwrite Safety**: Existing files are never replaced without explicit `--force`.
+- **No Hook Execution**: Blueprints cannot run arbitrary shell commands during generation.
+- **Secret Redaction**: Variables declared as `sensitive` are redacted in `.structgen.json` provenance files.
 
-- generated paths cannot be absolute or escape the target directory
-- template sources cannot escape their blueprint directory
-- existing files are never overwritten without `--force`
-- generation refuses to write through symlink ancestors
-- captured files have a configurable size limit
-- capture scans text for common secret patterns
-- executable permissions are preserved
-- sensitive variables are redacted from `.structgen.json`
-- arbitrary post-generation hooks are deliberately unsupported in version 1
+For details, view [docs/SECURITY.md](docs/SECURITY.md).
 
-## Commands
+## Blueprint Specification
 
-```text
-structgen list
-structgen show <preset-id>
-structgen create [preset-id] [output]
-structgen validate <blueprint-directory>
-structgen vault init
-structgen vault capture <source-directory>
-structgen vault import <blueprint-directory>
-structgen vault remove <preset-id>
-structgen doctor
-```
+For full syntax rules on `blueprint.json` variable definitions, transforms, conditions, and entry types, refer to the [Blueprint Specification v1](docs/BLUEPRINT_SPEC.md).
 
-Run `structgen help` for flags.
+## Troubleshooting
+
+- **`NON_INTERACTIVE` Error**: Interactive input was attempted in a non-TTY terminal. Solution: Pass `--interactive=false` and supply variables with `--set key=value`.
+- **`FILE_EXISTS` Error**: Output path already contains target files. Solution: Pass `--force` to allow overwriting or choose a clean target directory.
+- **`SECRET_DETECTED` Error**: Capture found credential patterns in source text. Solution: Review files to remove secrets, or pass `--allow-sensitive` if verified safe.
+- **`PATH_TRAVERSAL` Error**: Blueprint entry or output path attempted parent directory escape (`../`). Solution: Ensure all paths remain relative within target root.
 
 ## Development
 
 ```bash
-npm install
+npm ci
 npm run typecheck
 npm test
+npm run test:coverage
 ```
 
-## Project documents
+## License
 
-- `docs/ARCHITECTURE.md`
-- `docs/BLUEPRINT_SPEC.md`
-- `docs/VAULTS.md`
-- `docs/SECURITY.md`
-- `docs/ROADMAP.md`
-- `HANDOFF.md`
-- `AGENTS.md`
-
-## Status
-
-Version `0.1.0` is a functional foundation. It supports deterministic generation, built-in and custom vaults, atomic blueprint capture and import, removal, validation, dry runs, configuration defaults, output interpolation, and a programmatic API.
+[MIT](LICENSE)

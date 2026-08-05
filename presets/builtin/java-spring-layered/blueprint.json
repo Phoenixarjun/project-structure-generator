@@ -101,6 +101,28 @@
     },
     {
       "type": "file",
+      "path": "gradlew",
+      "source": "template/gradlew",
+      "mode": 493
+    },
+    {
+      "type": "file",
+      "path": "gradlew.bat",
+      "source": "template/gradlew.bat"
+    },
+    {
+      "type": "file",
+      "path": "gradle/wrapper/gradle-wrapper.properties",
+      "source": "template/gradle/wrapper/gradle-wrapper.properties"
+    },
+    {
+      "type": "file",
+      "path": "gradle/wrapper/gradle-wrapper.jar",
+      "source": "template/gradle/wrapper/gradle-wrapper.jar",
+      "template": false
+    },
+    {
+      "type": "file",
       "path": ".gitignore",
       "source": "template/gitignore"
     },

@@ -5,25 +5,48 @@ import type { Primitive } from "../core/types.js";
 import type { VariablePrompter } from "../engine/variables.js";
 
 export class TerminalPrompter implements VariablePrompter {
-  async input(prompt: string, defaultValue?: string): Promise<string> {
+  async input(prompt: string, defaultValue?: string, required = false): Promise<string> {
     this.assertInteractive();
-    const reader = createInterface({ input: stdin, output: stdout });
-    try {
-      const suffix = defaultValue === undefined ? "" : ` [${defaultValue}]`;
-      const answer = await reader.question(`${prompt}${suffix}: `);
-      return answer.trim() === "" && defaultValue !== undefined ? defaultValue : answer.trim();
-    } finally {
-      reader.close();
+    while (true) {
+      const reader = createInterface({ input: stdin, output: stdout });
+      try {
+        const suffix = defaultValue === undefined ? "" : ` [${defaultValue}]`;
+        const answer = await reader.question(`${prompt}${suffix}: `);
+        const trimmed = answer.trim();
+        if (trimmed !== "") {
+          return trimmed;
+        }
+        if (defaultValue !== undefined) {
+          return defaultValue;
+        }
+        if (!required) {
+          return "";
+        }
+        stdout.write("Value is required. Please try again.\n");
+      } catch (error: unknown) {
+        throw new StructgenError("CANCELLED", "Interactive input cancelled or closed", error);
+      } finally {
+        reader.close();
+      }
     }
   }
 
   async confirm(prompt: string, defaultValue = false): Promise<boolean> {
     const marker = defaultValue ? "Y/n" : "y/N";
-    const answer = await this.input(`${prompt} (${marker})`);
-    if (answer === "") {
-      return defaultValue;
+    while (true) {
+      const answer = await this.input(`${prompt} (${marker})`);
+      if (answer === "") {
+        return defaultValue;
+      }
+      const normalized = answer.toLowerCase();
+      if (["y", "yes", "true", "1"].includes(normalized)) {
+        return true;
+      }
+      if (["n", "no", "false", "0"].includes(normalized)) {
+        return false;
+      }
+      stdout.write("Invalid answer. Please enter 'y' or 'n'.\n");
     }
-    return ["y", "yes", "true", "1"].includes(answer.toLowerCase());
   }
 
   async select(prompt: string, choices: Primitive[], defaultValue?: Primitive): Promise<Primitive> {
@@ -33,12 +56,14 @@ export class TerminalPrompter implements VariablePrompter {
     const defaultIndex = defaultValue === undefined
       ? undefined
       : choices.findIndex((choice) => choice === defaultValue) + 1;
-    const answer = await this.input("Select", defaultIndex && defaultIndex > 0 ? String(defaultIndex) : undefined);
-    const index = Number.parseInt(answer, 10) - 1;
-    if (!Number.isInteger(index) || index < 0 || index >= choices.length) {
-      throw new StructgenError("INVALID_SELECTION", `Selection must be between 1 and ${choices.length}`);
+    while (true) {
+      const answer = await this.input("Select", defaultIndex && defaultIndex > 0 ? String(defaultIndex) : undefined);
+      const index = Number.parseInt(answer, 10) - 1;
+      if (Number.isInteger(index) && index >= 0 && index < choices.length) {
+        return choices[index] ?? null;
+      }
+      stdout.write(`Invalid selection. Please choose a number between 1 and ${choices.length}.\n`);
     }
-    return choices[index] ?? null;
   }
 
   private assertInteractive(): void {
