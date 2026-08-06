@@ -92,7 +92,7 @@
       {
         "type": "file",
         "path": "src/features/{{featureNameKebab}}/tests/{{featureNamePascal}}View.test.tsx",
-        "content": "import React from 'react';\nimport { {{featureNamePascal}}View } from '../components/{{featureNamePascal}}View';\n\ndescribe('{{featureNamePascal}}View', () => {\n  it('renders correctly', () => {\n    expect({{featureNamePascal}}View).toBeDefined();\n  });\n});\n"
+        "content": "import React from 'react';\nimport { {{featureNamePascal}}View } from '../components/{{featureNamePascal}}View';\n\nexport function test{{featureNamePascal}}View() {\n  if (typeof {{featureNamePascal}}View !== 'function') {\n    throw new Error('{{featureNamePascal}}View is not defined');\n  }\n}\n"
       }
     ]
   },

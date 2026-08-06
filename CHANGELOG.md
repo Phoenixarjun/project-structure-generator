@@ -5,6 +5,12 @@ All notable changes to Project Structure Generator (`@naresh007/project-structur
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.4] - 2026-08-06
+
+### Fixed
+- Added `@types/node`, `@types/react`, and `@types/react-dom` devDependencies to Next.js template `package.json`.
+- Standardized self-contained test modules for frontend feature templates.
+
 ## [0.2.3] - 2026-08-06
 
 ### Fixed

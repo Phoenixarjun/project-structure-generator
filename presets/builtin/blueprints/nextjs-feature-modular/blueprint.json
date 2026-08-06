@@ -107,7 +107,7 @@
       {
         "type": "file",
         "path": "src/features/{{featureNameKebab}}/tests/{{featureNamePascal}}Form.test.tsx",
-        "content": "import React from 'react';\nimport { {{featureNamePascal}}Form } from '../components/{{featureNamePascal}}Form';\n\ndescribe('{{featureNamePascal}}Form', () => {\n  it('is defined', () => {\n    expect({{featureNamePascal}}Form).toBeDefined();\n  });\n});\n"
+        "content": "import React from 'react';\nimport { {{featureNamePascal}}Form } from '../components/{{featureNamePascal}}Form';\n\nexport function test{{featureNamePascal}}Form() {\n  if (typeof {{featureNamePascal}}Form !== 'function') {\n    throw new Error('{{featureNamePascal}}Form is not defined');\n  }\n}\n"
       }
     ]
   },
