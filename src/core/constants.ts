@@ -12,7 +12,7 @@ export const GENERATION_METADATA_FILE_NAME = ".structgen.json";
 export const PROVENANCE_FILE_NAME = ".structgen.json";
 export const BLUEPRINT_SCHEMA_VERSION = 1;
 export const MINIMUM_NODE_MAJOR = 22;
-export const VERSION = "0.2.1";
+export const VERSION = "0.2.2";
 
 export function findPackageRoot(fromUrl: string = import.meta.url): string {
   let current = path.dirname(fileURLToPath(fromUrl));
