@@ -4,12 +4,17 @@ import { execSync } from "node:child_process";
 import path from "node:path";
 
 void test("package content test: published files whitelist", () => {
-  const output = execSync("npm pack --dry-run --json", {
+  const rawOutput = execSync("npm pack --dry-run --json --ignore-scripts", {
     cwd: path.resolve("."),
     encoding: "utf8"
   });
 
-  const parsed = JSON.parse(output) as Array<{ files: Array<{ path: string }> }>;
+  const jsonStart = rawOutput.indexOf("[");
+  const jsonEnd = rawOutput.lastIndexOf("]");
+  assert.ok(jsonStart >= 0 && jsonEnd > jsonStart, "npm pack did not return JSON output");
+
+  const jsonText = rawOutput.slice(jsonStart, jsonEnd + 1);
+  const parsed = JSON.parse(jsonText) as Array<{ files: Array<{ path: string }> }>;
   assert.ok(parsed.length > 0);
 
   const packFiles = parsed[0]?.files.map((f) => f.path) ?? [];
