@@ -25,14 +25,132 @@
       "transform": "kebab"
     }
   ],
+  "featureTemplate": {
+    "variables": ["featureName"],
+    "entries": [
+      {
+        "type": "directory",
+        "path": "src/features/{{featureNameKebab}}"
+      },
+      {
+        "type": "directory",
+        "path": "src/features/{{featureNameKebab}}/actions"
+      },
+      {
+        "type": "directory",
+        "path": "src/features/{{featureNameKebab}}/api"
+      },
+      {
+        "type": "directory",
+        "path": "src/features/{{featureNameKebab}}/components"
+      },
+      {
+        "type": "directory",
+        "path": "src/features/{{featureNameKebab}}/hooks"
+      },
+      {
+        "type": "directory",
+        "path": "src/features/{{featureNameKebab}}/schemas"
+      },
+      {
+        "type": "directory",
+        "path": "src/features/{{featureNameKebab}}/server"
+      },
+      {
+        "type": "directory",
+        "path": "src/features/{{featureNameKebab}}/types"
+      },
+      {
+        "type": "directory",
+        "path": "src/features/{{featureNameKebab}}/tests"
+      },
+      {
+        "type": "file",
+        "path": "src/features/{{featureNameKebab}}/index.ts",
+        "content": "export * from './components/{{featureNamePascal}}Form';\nexport * from './hooks/use{{featureNamePascal}}';\nexport * from './types';\n"
+      },
+      {
+        "type": "file",
+        "path": "src/features/{{featureNameKebab}}/actions/{{featureNameKebab}}.ts",
+        "content": "'use server';\n\nexport async function {{featureNameCamel}}Action() {\n  return { success: true };\n}\n"
+      },
+      {
+        "type": "file",
+        "path": "src/features/{{featureNameKebab}}/api/client.ts",
+        "content": "import { environment } from '../../../config/environment';\n\nexport async function fetch{{featureNamePascal}}() {\n  const res = await fetch(`${environment.apiUrl}/{{featureNameKebab}}`);\n  return res.json();\n}\n"
+      },
+      {
+        "type": "file",
+        "path": "src/features/{{featureNameKebab}}/components/{{featureNamePascal}}Form.tsx",
+        "content": "import React from 'react';\n\nexport function {{featureNamePascal}}Form() {\n  return <form className=\"{{featureNameKebab}}-form\">Feature: {{featureNameKebab}}</form>;\n}\n"
+      },
+      {
+        "type": "file",
+        "path": "src/features/{{featureNameKebab}}/hooks/use{{featureNamePascal}}.ts",
+        "content": "import { useState } from 'react';\n\nexport function use{{featureNamePascal}}() {\n  const [state] = useState('{{featureNameKebab}}');\n  return { state };\n}\n"
+      },
+      {
+        "type": "file",
+        "path": "src/features/{{featureNameKebab}}/schemas/{{featureNameKebab}}.schema.ts",
+        "content": "export interface {{featureNamePascal}}Schema {\n  id: string;\n  name: string;\n}\n"
+      },
+      {
+        "type": "file",
+        "path": "src/features/{{featureNameKebab}}/server/{{featureNameKebab}}.service.ts",
+        "content": "import 'server-only';\n\nexport async function get{{featureNamePascal}}ServiceData() {\n  return { service: '{{featureNameKebab}}' };\n}\n"
+      },
+      {
+        "type": "file",
+        "path": "src/features/{{featureNameKebab}}/types/index.ts",
+        "content": "export interface {{featureNamePascal}}DTO {\n  id: string;\n}\n"
+      },
+      {
+        "type": "file",
+        "path": "src/features/{{featureNameKebab}}/tests/{{featureNamePascal}}Form.test.tsx",
+        "content": "import React from 'react';\nimport { {{featureNamePascal}}Form } from '../components/{{featureNamePascal}}Form';\n\ndescribe('{{featureNamePascal}}Form', () => {\n  it('is defined', () => {\n    expect({{featureNamePascal}}Form).toBeDefined();\n  });\n});\n"
+      }
+    ]
+  },
   "entries": [
     {
       "type": "directory",
-      "path": "src/app"
+      "path": "src/app/(public)"
+    },
+    {
+      "type": "directory",
+      "path": "src/app/(application)/dashboard"
+    },
+    {
+      "type": "directory",
+      "path": "src/app/api/health"
+    },
+    {
+      "type": "directory",
+      "path": "src/components/ui"
+    },
+    {
+      "type": "directory",
+      "path": "src/components/shared"
     },
     {
       "type": "directory",
       "path": "src/features"
+    },
+    {
+      "type": "directory",
+      "path": "src/lib/dal"
+    },
+    {
+      "type": "directory",
+      "path": "src/lib/server"
+    },
+    {
+      "type": "directory",
+      "path": "src/config"
+    },
+    {
+      "type": "directory",
+      "path": "src/types"
     },
     {
       "type": "file",
@@ -51,8 +169,78 @@
     },
     {
       "type": "file",
+      "path": ".env.example",
+      "source": "template/env.example"
+    },
+    {
+      "type": "file",
+      "path": "next.config.ts",
+      "source": "template/next.config.ts"
+    },
+    {
+      "type": "file",
+      "path": "tsconfig.json",
+      "source": "template/tsconfig.json"
+    },
+    {
+      "type": "file",
+      "path": "src/app/layout.tsx",
+      "source": "template/src/app/layout.tsx"
+    },
+    {
+      "type": "file",
       "path": "src/app/page.tsx",
       "source": "template/src/app/page.tsx"
+    },
+    {
+      "type": "file",
+      "path": "src/app/globals.css",
+      "source": "template/src/app/globals.css"
+    },
+    {
+      "type": "file",
+      "path": "src/app/(public)/page.tsx",
+      "source": "template/src/app/(public)/page.tsx"
+    },
+    {
+      "type": "file",
+      "path": "src/app/(application)/dashboard/page.tsx",
+      "source": "template/src/app/(application)/dashboard/page.tsx"
+    },
+    {
+      "type": "file",
+      "path": "src/app/api/health/route.ts",
+      "source": "template/src/app/api/health/route.ts"
+    },
+    {
+      "type": "file",
+      "path": "src/components/ui/README.md",
+      "source": "template/src/components/ui/README.md"
+    },
+    {
+      "type": "file",
+      "path": "src/components/shared/README.md",
+      "source": "template/src/components/shared/README.md"
+    },
+    {
+      "type": "file",
+      "path": "src/lib/dal/index.ts",
+      "source": "template/src/lib/dal/index.ts"
+    },
+    {
+      "type": "file",
+      "path": "src/lib/server/environment.ts",
+      "source": "template/src/lib/server/environment.ts"
+    },
+    {
+      "type": "file",
+      "path": "src/config/environment.ts",
+      "source": "template/src/config/environment.ts"
+    },
+    {
+      "type": "file",
+      "path": "src/types/index.ts",
+      "source": "template/src/types/index.ts"
     }
   ]
 }

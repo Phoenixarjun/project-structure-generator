@@ -5,6 +5,14 @@ All notable changes to Project Structure Generator (`@naresh007/project-structur
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.3] - 2026-08-06
+
+### Fixed
+- Completed full Next.js Feature-Modular architecture templates (`layout.tsx`, route handlers, server actions, server-only DAL).
+- Completed React Feature-Based component structures and UI/shared components READMEs.
+- Fixed interactive multiselect comma and space input parsing (`1 2 3 4`).
+- Added entry-mode parity verification test suite (`tests/parity.test.ts`).
+
 ## [0.2.2] - 2026-08-06
 
 ### Fixed

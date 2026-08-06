@@ -30,7 +30,7 @@
   ],
   "featureTemplate": {
     "variables": ["featureName"],
-    "directories": [
+    "entries": [
       {
         "type": "directory",
         "path": "src/features/{{featureNameKebab}}"
@@ -45,14 +45,24 @@
       },
       {
         "type": "directory",
+        "path": "src/features/{{featureNameKebab}}/hooks"
+      },
+      {
+        "type": "directory",
+        "path": "src/features/{{featureNameKebab}}/schemas"
+      },
+      {
+        "type": "directory",
         "path": "src/features/{{featureNameKebab}}/types"
-      }
-    ],
-    "files": [
+      },
+      {
+        "type": "directory",
+        "path": "src/features/{{featureNameKebab}}/tests"
+      },
       {
         "type": "file",
         "path": "src/features/{{featureNameKebab}}/index.ts",
-        "content": "export * from './components/{{featureNamePascal}}View';\nexport * from './types';\n"
+        "content": "export * from './components/{{featureNamePascal}}View';\nexport * from './hooks/use{{featureNamePascal}}';\nexport * from './types';\n"
       },
       {
         "type": "file",
@@ -62,12 +72,27 @@
       {
         "type": "file",
         "path": "src/features/{{featureNameKebab}}/components/{{featureNamePascal}}View.tsx",
-        "content": "import React from 'react';\n\nexport function {{featureNamePascal}}View() {\n  return <div className=\"{{featureNameKebab}}-view\">Feature: {{featureNameKebab}}</div>;\n}\n"
+        "content": "import React from 'react';\nimport { use{{featureNamePascal}} } from '../hooks/use{{featureNamePascal}}';\n\nexport function {{featureNamePascal}}View() {\n  const { data, loading } = use{{featureNamePascal}}();\n  if (loading) return <div>Loading...</div>;\n  return <div className=\"{{featureNameKebab}}-view\">Feature: {data}</div>;\n}\n"
+      },
+      {
+        "type": "file",
+        "path": "src/features/{{featureNameKebab}}/hooks/use{{featureNamePascal}}.ts",
+        "content": "import { useState, useEffect } from 'react';\nimport { fetch{{featureNamePascal}}Data } from '../api/client';\n\nexport function use{{featureNamePascal}}() {\n  const [data, setData] = useState<string>('{{featureNameKebab}}');\n  const [loading, setLoading] = useState<boolean>(false);\n  return { data, loading };\n}\n"
+      },
+      {
+        "type": "file",
+        "path": "src/features/{{featureNameKebab}}/schemas/{{featureNameKebab}}.schema.ts",
+        "content": "export interface {{featureNamePascal}}Schema {\n  id: string;\n  name: string;\n}\n"
       },
       {
         "type": "file",
         "path": "src/features/{{featureNameKebab}}/types/index.ts",
         "content": "export interface {{featureNamePascal}}Item {\n  id: string;\n  name: string;\n}\n"
+      },
+      {
+        "type": "file",
+        "path": "src/features/{{featureNameKebab}}/tests/{{featureNamePascal}}View.test.tsx",
+        "content": "import React from 'react';\nimport { {{featureNamePascal}}View } from '../components/{{featureNamePascal}}View';\n\ndescribe('{{featureNamePascal}}View', () => {\n  it('renders correctly', () => {\n    expect({{featureNamePascal}}View).toBeDefined();\n  });\n});\n"
       }
     ]
   },
@@ -167,6 +192,16 @@
       "type": "file",
       "path": "src/app/routes.tsx",
       "source": "template/src/app/routes.tsx"
+    },
+    {
+      "type": "file",
+      "path": "src/components/ui/README.md",
+      "source": "template/src/components/ui/README.md"
+    },
+    {
+      "type": "file",
+      "path": "src/components/shared/README.md",
+      "source": "template/src/components/shared/README.md"
     },
     {
       "type": "file",

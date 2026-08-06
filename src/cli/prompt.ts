@@ -120,7 +120,7 @@ export class TerminalPrompter implements VariablePrompter {
     } else if (normalized === "all") {
       resultSet = options.map((o) => o.value);
     } else {
-      const parts = normalized.split(",").map((s) => s.trim());
+      const parts = normalized.split(/[,\s]+/).map((s) => s.trim()).filter((s) => s.length > 0);
       for (const part of parts) {
         const idx = Number.parseInt(part, 10) - 1;
         const opt = options[idx];
