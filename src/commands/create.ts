@@ -23,11 +23,13 @@ import { printGeneration, printJson } from "../cli/output.js";
 import { writeFile } from "node:fs/promises";
 import { PROVENANCE_FILE_NAME } from "../core/constants.js";
 
+import { VERSION } from "../core/constants.js";
+
 async function writeProvenance(plan: Awaited<ReturnType<typeof composeGenerationPlan>>): Promise<string> {
   const prov: ProvenanceManifest = {
     schemaVersion: 1,
     generator: "@naresh007/project-structure-generator",
-    generatorVersion: "0.1.2",
+    generatorVersion: VERSION,
     generatedAt: new Date().toISOString(),
     blueprint: {
       kind: "blueprint",

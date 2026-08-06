@@ -11,7 +11,8 @@ export const BLUEPRINT_FILE_NAME = "blueprint.json";
 export const GENERATION_METADATA_FILE_NAME = ".structgen.json";
 export const PROVENANCE_FILE_NAME = ".structgen.json";
 export const BLUEPRINT_SCHEMA_VERSION = 1;
-export const MINIMUM_NODE_MAJOR = 24;
+export const MINIMUM_NODE_MAJOR = 22;
+export const VERSION = "0.2.0";
 
 export function findPackageRoot(fromUrl: string = import.meta.url): string {
   let current = path.dirname(fileURLToPath(fromUrl));

@@ -25,6 +25,7 @@ import {
 } from "./commands/profile.js";
 import { runCatalogueMatrix, runCatalogueValidate } from "./commands/catalogue.js";
 import { runDoctor } from "./commands/doctor.js";
+import { VERSION } from "./core/constants.js";
 
 const help = `Project Structure Generator
 
@@ -131,6 +132,11 @@ async function main(): Promise<void> {
   const args = parseArguments(process.argv.slice(2));
   const command = args.command;
   const json = booleanFlag(args, ["json"], false);
+
+  if (booleanFlag(args, ["version", "v"], false) || command === "version") {
+    process.stdout.write(`@naresh007/project-structure-generator v${VERSION}\n`);
+    return;
+  }
 
   if (!command || command === "help" || booleanFlag(args, ["help", "h"], false)) {
     process.stdout.write(help);
