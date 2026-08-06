@@ -1,6 +1,6 @@
 {
   "name": "@naresh007/project-structure-generator",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A deterministic CLI for generating reusable, framework-aware project structures.",
   "type": "module",
   "bin": {
