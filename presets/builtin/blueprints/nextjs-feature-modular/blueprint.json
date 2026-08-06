@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "id": "nextjs-feature-modular",
+  "version": "1.0.0",
+  "name": "Next.js Feature Modular",
+  "description": "Next.js App Router with feature-based modular structure.",
+  "projectType": "frontend-application",
+  "language": "typescript",
+  "framework": "nextjs",
+  "organization": "feature-modular",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "standard",
+  "supportedCapabilities": [
+    "unit-tests",
+    "docker",
+    "github-actions",
+    "structured-logging"
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    }
+  ],
+  "entries": [
+    {
+      "type": "directory",
+      "path": "src/app"
+    },
+    {
+      "type": "directory",
+      "path": "src/features"
+    },
+    {
+      "type": "file",
+      "path": "package.json",
+      "source": "template/package.json"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "src/app/page.tsx",
+      "source": "template/src/app/page.tsx"
+    }
+  ]
+}

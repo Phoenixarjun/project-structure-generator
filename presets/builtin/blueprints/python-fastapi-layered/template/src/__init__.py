@@ -1,0 +1,1 @@
+"""{{pythonPackageName}} package."""

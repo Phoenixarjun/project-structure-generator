@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "id": "python-flask-feature-modular",
+  "version": "1.0.0",
+  "name": "Flask Feature Modular",
+  "description": "Flask feature-modular architecture where each feature owns its Blueprint.",
+  "projectType": "backend-service",
+  "language": "python",
+  "framework": "flask",
+  "organization": "feature-modular",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "operational",
+  "supportedCapabilities": [
+    "unit-tests",
+    "integration-tests",
+    "docker",
+    "docker-compose",
+    "github-actions",
+    "postgres",
+    "redis",
+    "kafka",
+    "structured-logging",
+    "opentelemetry",
+    "documentation-showcase"
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    },
+    {
+      "name": "pythonPackageName",
+      "prompt": "Python package name",
+      "type": "string",
+      "default": "{{projectName}}",
+      "transform": "snake"
+    }
+  ],
+  "featureTemplate": {
+    "entries": [
+      {
+        "type": "file",
+        "path": "src/{{pythonPackageName}}/features/{{featureNameSnake}}/__init__.py",
+        "content": "\"\"\"Feature {{featureNameSnake}} package.\"\"\"\n"
+      },
+      {
+        "type": "file",
+        "path": "src/{{pythonPackageName}}/features/{{featureNameSnake}}/blueprint.py",
+        "content": "from flask import Blueprint, jsonify\n\n{{featureNameSnake}}_bp = Blueprint('{{featureNameSnake}}', __name__, url_prefix='/{{featureNameKebab}}')\n\n@{{featureNameSnake}}_bp.route('', methods=['GET'])\ndef index():\n    return jsonify({'feature': '{{featureNameSnake}}'})\n"
+      },
+      {
+        "type": "file",
+        "path": "src/{{pythonPackageName}}/features/{{featureNameSnake}}/service.py",
+        "content": "class {{featureNamePascal}}Service:\n    def get_info(self):\n        return {'name': '{{featureNameSnake}}'}\n"
+      }
+    ]
+  },
+  "entries": [
+    {
+      "type": "directory",
+      "path": "src/{{pythonPackageName}}/shared"
+    },
+    {
+      "type": "directory",
+      "path": "src/{{pythonPackageName}}/features"
+    },
+    {
+      "type": "directory",
+      "path": "tests/unit"
+    },
+    {
+      "type": "directory",
+      "path": "tests/integration"
+    },
+    {
+      "type": "file",
+      "path": "pyproject.toml",
+      "source": "template/pyproject.toml"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/__init__.py",
+      "source": "template/src/__init__.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/app.py",
+      "source": "template/src/app.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/shared/__init__.py",
+      "source": "template/src/shared/__init__.py"
+    },
+    {
+      "type": "file",
+      "path": "tests/unit/test_app.py",
+      "source": "template/tests/unit/test_app.py"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "typescript-cli-tool",
+  "name": "TypeScript CLI Tool",
+  "description": "Production TypeScript modular CLI application profile",
+  "selection": {
+    "projectType": "cli",
+    "language": "typescript",
+    "framework": "typescript-node",
+    "blueprint": "typescript-cli-modular",
+    "maturity": "operational",
+    "capabilities": [
+      "unit-tests",
+      "integration-tests",
+      "docker",
+      "github-actions",
+      "structured-logging"
+    ]
+  },
+  "output": "{{projectName}}"
+}

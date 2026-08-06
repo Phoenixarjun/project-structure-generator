@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/PhoenixArjun/project-structure-generator/schema/catalogue.schema.json",
+  "title": "Project Structure Generator Catalogue Summary",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "blueprints",
+    "packs",
+    "profiles"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "blueprints": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "packs": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "profiles": {
+      "type": "array",
+      "items": { "type": "object" }
+    }
+  }
+}

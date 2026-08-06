@@ -10,7 +10,10 @@ import { StructgenError } from "../core/errors.js";
 import type { CaptureOptions, ProjectConfig, VaultLocation } from "../core/types.js";
 import { loadBlueprintDirectory } from "../blueprint/loader.js";
 import { captureBlueprint, importBlueprint } from "../vault/capture.js";
-import { userVault, workspaceVault } from "../vault/locations.js";
+import { resolveVaultSequence, userVault, workspaceVault } from "../vault/locations.js";
+import { loadCatalogue } from "../catalogue/registry.js";
+import { findBlueprintById, findPackById, findProfileById } from "../catalogue/query.js";
+import { printJson } from "../cli/output.js";
 
 export function resolveVaultScope(scope: string, cwd = process.cwd()): string {
   if (scope === "user") {
@@ -28,7 +31,9 @@ export async function runVaultInit(options: {
   force: boolean;
 }): Promise<void> {
   const vault = resolveVaultScope(options.scope);
-  await mkdir(vault, { recursive: true });
+  await mkdir(path.join(vault, "blueprints"), { recursive: true });
+  await mkdir(path.join(vault, "packs"), { recursive: true });
+  await mkdir(path.join(vault, "profiles"), { recursive: true });
 
   if (options.scope === "workspace") {
     const configPath = path.join(process.cwd(), CONFIG_FILE_NAME);
@@ -44,6 +49,93 @@ export async function runVaultInit(options: {
   }
 
   process.stdout.write(`Initialized ${options.scope} vault at ${vault}\n`);
+}
+
+export async function runVaultList(options: {
+  type?: "blueprint" | "pack" | "profile";
+  scope?: string;
+  explicitVaults?: string[];
+  json?: boolean;
+}): Promise<void> {
+  const vaults = resolveVaultSequence(options.explicitVaults ?? []);
+  const catalogue = await loadCatalogue(vaults);
+
+  const type = options.type ?? "blueprint";
+
+  if (options.json) {
+    if (type === "pack") printJson(catalogue.packs);
+    else if (type === "profile") printJson(catalogue.profiles);
+    else printJson(catalogue.blueprints);
+    return;
+  }
+
+  if (type === "pack") {
+    if (catalogue.packs.length === 0) {
+      process.stdout.write("No capability packs found.\n");
+      return;
+    }
+    for (const p of catalogue.packs) {
+      process.stdout.write(`${p.pack.id.padEnd(25)} ${p.pack.name} (${p.vault.label})\n`);
+    }
+  } else if (type === "profile") {
+    if (catalogue.profiles.length === 0) {
+      process.stdout.write("No profiles found.\n");
+      return;
+    }
+    for (const p of catalogue.profiles) {
+      process.stdout.write(`${p.profile.id.padEnd(25)} ${p.profile.name} (${p.vault.label})\n`);
+    }
+  } else {
+    if (catalogue.blueprints.length === 0) {
+      process.stdout.write("No blueprints found.\n");
+      return;
+    }
+    for (const b of catalogue.blueprints) {
+      process.stdout.write(`${b.blueprint.id.padEnd(30)} ${b.blueprint.name} (${b.vault.label})\n`);
+    }
+  }
+}
+
+export async function runVaultInspect(
+  id: string,
+  options: { explicitVaults?: string[]; json?: boolean }
+): Promise<void> {
+  const vaults = resolveVaultSequence(options.explicitVaults ?? []);
+  const catalogue = await loadCatalogue(vaults);
+
+  const bp = findBlueprintById(catalogue, id);
+  const pack = findPackById(catalogue, id);
+  const profile = findProfileById(catalogue, id);
+
+  const found = bp ?? pack ?? profile;
+  if (!found) {
+    throw new StructgenError("RESOURCE_NOT_FOUND", `Resource not found in vault: ${id}`);
+  }
+
+  if (options.json) {
+    printJson(found);
+  } else {
+    process.stdout.write(`Vault Resource: ${id}\n`);
+    process.stdout.write(`Vault: ${found.vault.label}\n`);
+    process.stdout.write(`Path: ${found.manifestPath}\n`);
+  }
+}
+
+export async function runVaultValidate(options: {
+  scope?: string;
+  explicitVaults?: string[];
+}): Promise<void> {
+  const vaults = resolveVaultSequence(options.explicitVaults ?? []);
+  const catalogue = await loadCatalogue(vaults);
+
+  if (catalogue.issues.length > 0) {
+    process.stdout.write(`Vault validation found ${catalogue.issues.length} issue(s):\n`);
+    for (const issue of catalogue.issues) {
+      process.stdout.write(`- ${issue.path}: ${issue.message}\n`);
+    }
+  } else {
+    process.stdout.write(`[OK] All vault resources valid.\n`);
+  }
 }
 
 export async function runVaultCapture(options: CaptureOptions): Promise<void> {
@@ -75,11 +167,18 @@ export async function runVaultRemove(options: {
     throw new StructgenError("CONFIRMATION_REQUIRED", "Pass --yes to remove a blueprint from a vault");
   }
 
-  const destination = resolveInside(options.destinationVault, options.id, "Blueprint removal target");
-  if (!(await pathExists(destination))) {
-    throw new StructgenError("BLUEPRINT_NOT_FOUND", `Blueprint not found in selected vault: ${options.id}`);
+  const bpDest = resolveInside(options.destinationVault, options.id, "Removal target");
+  const subDest = resolveInside(path.join(options.destinationVault, "blueprints"), options.id, "Removal target");
+
+  let target = bpDest;
+  if (!(await pathExists(target)) && (await pathExists(subDest))) {
+    target = subDest;
   }
 
-  await rm(destination, { recursive: true, force: true });
+  if (!(await pathExists(target))) {
+    throw new StructgenError("BLUEPRINT_NOT_FOUND", `Resource not found in selected vault: ${options.id}`);
+  }
+
+  await rm(target, { recursive: true, force: true });
   process.stdout.write(`Removed ${options.id} from ${options.destinationVault}\n`);
 }

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "unit-tests",
+  "name": "Unit Testing",
+  "category": "testing",
+  "description": "Adds unit testing configuration and health tests.",
+  "files": [
+    {
+      "type": "file",
+      "path": "tests/test_unit.py",
+      "source": "template/test_unit.py",
+      "when": {
+        "variable": "language",
+        "equals": "python"
+      }
+    }
+  ]
+}

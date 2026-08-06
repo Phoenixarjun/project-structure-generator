@@ -26,11 +26,14 @@ function renderBuffer(content: Uint8Array, values: Record<string, Primitive>): U
   return encoder.encode(interpolate(text, values));
 }
 
+import { resolveVariables } from "./variables.js";
+
 export async function createGenerationPlan(
   record: BlueprintRecord,
   targetDirectory: string,
-  variables: Record<string, Primitive>
+  providedVariables: Record<string, Primitive>
 ): Promise<GenerationPlan> {
+  const variables = await resolveVariables(record.blueprint.variables, providedVariables, false);
   const entries: PlannedEntry[] = [];
   const outputPaths = new Map<string, "directory" | "file">();
 
@@ -97,6 +100,8 @@ export async function createGenerationPlan(
 
   return {
     blueprint: record,
+    maturity: record.blueprint.defaultMaturity ?? "standard",
+    packs: [],
     targetDirectory: path.resolve(targetDirectory),
     variables,
     entries

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "kubernetes",
+  "name": "Kubernetes Kustomize Deployment",
+  "category": "deployment",
+  "description": "Kubernetes base and overlay deployment manifests using Kustomize under deploy/k8s.",
+  "conflictsWith": ["helm"],
+  "compatibleWith": {
+    "projectTypes": ["backend-service", "frontend-application", "fullstack-application", "worker"],
+    "languages": ["python", "java", "go", "typescript"]
+  },
+  "directories": [
+    {
+      "type": "directory",
+      "path": "deploy/k8s/overlays/development"
+    },
+    {
+      "type": "directory",
+      "path": "deploy/k8s/overlays/production"
+    }
+  ],
+  "files": [
+    {
+      "type": "file",
+      "path": "deploy/k8s/base/deployment.yaml",
+      "source": "template/deployment.yaml"
+    },
+    {
+      "type": "file",
+      "path": "deploy/k8s/base/service.yaml",
+      "source": "template/service.yaml"
+    },
+    {
+      "type": "file",
+      "path": "deploy/k8s/base/kustomization.yaml",
+      "source": "template/kustomization.yaml"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "docker-compose",
+  "name": "Docker Compose",
+  "category": "infrastructure",
+  "description": "Multi-container local orchestration using compose.yaml.",
+  "compatibleWith": {
+    "projectTypes": ["backend-service", "frontend-application", "worker"],
+    "languages": ["python", "java", "go", "typescript"]
+  },
+  "files": [
+    {
+      "type": "file",
+      "path": "compose.yaml",
+      "source": "template/compose.yaml"
+    }
+  ]
+}

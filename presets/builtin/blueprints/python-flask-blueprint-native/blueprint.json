@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "id": "python-flask-blueprint-native",
+  "version": "1.0.0",
+  "name": "Flask Blueprint Native",
+  "description": "Flask application factory using Blueprints for modular route organization.",
+  "projectType": "backend-service",
+  "language": "python",
+  "framework": "flask",
+  "organization": "blueprint-native",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "standard",
+  "supportedCapabilities": [
+    "unit-tests",
+    "integration-tests",
+    "docker",
+    "docker-compose",
+    "github-actions",
+    "postgres",
+    "redis",
+    "kafka",
+    "structured-logging",
+    "opentelemetry",
+    "documentation-showcase"
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    },
+    {
+      "name": "pythonPackageName",
+      "prompt": "Python package name",
+      "type": "string",
+      "default": "{{projectName}}",
+      "transform": "snake"
+    }
+  ],
+  "entries": [
+    {
+      "type": "directory",
+      "path": "tests/unit"
+    },
+    {
+      "type": "directory",
+      "path": "tests/integration"
+    },
+    {
+      "type": "file",
+      "path": "pyproject.toml",
+      "source": "template/pyproject.toml"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/__init__.py",
+      "source": "template/src/__init__.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/app.py",
+      "source": "template/src/app.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/config.py",
+      "source": "template/src/config.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/extensions.py",
+      "source": "template/src/extensions.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/blueprints/__init__.py",
+      "source": "template/src/blueprints/__init__.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/blueprints/health/__init__.py",
+      "source": "template/src/blueprints/health/__init__.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/blueprints/health/routes.py",
+      "source": "template/src/blueprints/health/routes.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/blueprints/health/service.py",
+      "source": "template/src/blueprints/health/service.py"
+    },
+    {
+      "type": "file",
+      "path": "tests/unit/test_health.py",
+      "source": "template/tests/unit/test_health.py"
+    }
+  ]
+}

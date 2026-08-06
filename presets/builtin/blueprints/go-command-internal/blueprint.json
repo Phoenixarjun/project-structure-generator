@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "id": "go-command-internal",
+  "version": "1.0.0",
+  "name": "Go Command-Internal",
+  "description": "Standard Go layout with entrypoint in cmd/ and internal implementation packages.",
+  "projectType": "backend-service",
+  "language": "go",
+  "framework": "go-standard-library",
+  "organization": "command-internal",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "standard",
+  "supportedCapabilities": [
+    "unit-tests",
+    "integration-tests",
+    "docker",
+    "docker-compose",
+    "github-actions",
+    "postgres",
+    "redis",
+    "structured-logging",
+    "opentelemetry",
+    "documentation-showcase"
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    },
+    {
+      "name": "goModule",
+      "prompt": "Go module path",
+      "type": "string",
+      "default": "example.com/{{projectName}}",
+      "required": true
+    }
+  ],
+  "entries": [
+    {
+      "type": "directory",
+      "path": "internal/app"
+    },
+    {
+      "type": "directory",
+      "path": "internal/repository"
+    },
+    {
+      "type": "directory",
+      "path": "internal/platform/database"
+    },
+    {
+      "type": "file",
+      "path": "go.mod",
+      "source": "template/go.mod"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "cmd/api/main.go",
+      "source": "template/cmd/api/main.go"
+    },
+    {
+      "type": "file",
+      "path": "internal/config/config.go",
+      "source": "template/internal/config/config.go"
+    },
+    {
+      "type": "file",
+      "path": "internal/service/health.go",
+      "source": "template/internal/service/health.go"
+    },
+    {
+      "type": "file",
+      "path": "internal/http/handler.go",
+      "source": "template/internal/http/handler.go"
+    },
+    {
+      "type": "file",
+      "path": "internal/http/handler_test.go",
+      "source": "template/internal/http/handler_test.go"
+    }
+  ]
+}

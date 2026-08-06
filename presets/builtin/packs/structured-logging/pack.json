@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "structured-logging",
+  "name": "Structured Logging",
+  "category": "observability",
+  "description": "Adds structured JSON logging configuration.",
+  "files": [
+    {
+      "type": "file",
+      "path": "logging.json",
+      "source": "template/logging.json"
+    }
+  ]
+}

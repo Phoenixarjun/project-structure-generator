@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/PhoenixArjun/project-structure-generator/schema/profile.schema.json",
+  "title": "Project Structure Generator Profile",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "name",
+    "selection"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "selection": {
+      "type": "object",
+      "required": [
+        "projectType",
+        "language",
+        "framework",
+        "blueprint",
+        "maturity",
+        "capabilities"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "projectType": { "type": "string" },
+        "language": { "type": "string" },
+        "framework": { "type": "string" },
+        "blueprint": { "type": "string" },
+        "maturity": {
+          "enum": ["prototype", "standard", "operational"]
+        },
+        "capabilities": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "features": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "variables": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["string", "number", "boolean", "null"]
+      }
+    },
+    "output": {
+      "type": "string"
+    }
+  }
+}

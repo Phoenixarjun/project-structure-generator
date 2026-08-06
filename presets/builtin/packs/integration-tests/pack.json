@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "integration-tests",
+  "name": "Integration Tests",
+  "category": "testing",
+  "description": "Integration testing scaffolding and environment setup.",
+  "compatibleWith": {
+    "projectTypes": ["backend-service", "frontend-application", "cli", "library", "worker"],
+    "languages": ["python", "java", "go", "typescript"]
+  },
+  "directories": [
+    {
+      "type": "directory",
+      "path": "tests/integration"
+    }
+  ]
+}

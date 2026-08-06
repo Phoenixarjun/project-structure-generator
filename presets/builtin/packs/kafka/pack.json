@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "kafka",
+  "name": "Apache Kafka Messaging",
+  "category": "messaging",
+  "description": "Apache Kafka event streaming producer and consumer skeleton.",
+  "compatibleWith": {
+    "projectTypes": ["backend-service", "worker"],
+    "languages": ["python", "java", "go", "typescript"]
+  }
+}

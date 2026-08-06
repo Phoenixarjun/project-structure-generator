@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "github-actions",
+  "name": "GitHub Actions CI",
+  "category": "delivery",
+  "description": "Adds continuous integration workflow.",
+  "files": [
+    {
+      "type": "file",
+      "path": ".github/workflows/ci.yml",
+      "source": "template/ci.yml"
+    }
+  ]
+}

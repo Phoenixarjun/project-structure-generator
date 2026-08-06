@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "id": "go-domain-modular",
+  "version": "1.0.0",
+  "name": "Go Domain-Modular",
+  "description": "Cohesive domain-modular Go architecture without artificial layer packages.",
+  "projectType": "backend-service",
+  "language": "go",
+  "framework": "go-standard-library",
+  "organization": "domain-modular",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "operational",
+  "supportedCapabilities": [
+    "unit-tests",
+    "integration-tests",
+    "docker",
+    "docker-compose",
+    "github-actions",
+    "postgres",
+    "redis",
+    "structured-logging",
+    "opentelemetry",
+    "documentation-showcase"
+  ],
+  "extensionPoints": [
+    {
+      "id": "application-imports",
+      "targetFile": "cmd/api/main.go",
+      "token": "/* {{EXTENSION_POINT:application-imports}} */"
+    },
+    {
+      "id": "application-bootstrap",
+      "targetFile": "cmd/api/main.go",
+      "token": "/* {{EXTENSION_POINT:application-bootstrap}} */"
+    }
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    },
+    {
+      "name": "goModule",
+      "prompt": "Go module path",
+      "type": "string",
+      "default": "example.com/{{projectName}}",
+      "required": true
+    }
+  ],
+  "featureTemplate": {
+    "entries": [
+      {
+        "type": "file",
+        "path": "internal/{{featureNameSnake}}/handler.go",
+        "content": "package {{featureNameSnake}}\n\nimport (\n\t\"encoding/json\"\n\t\"net/http\"\n)\n\ntype Handler struct{\n\tservice *Service\n}\n\nfunc NewHandler(svc *Service) *Handler {\n\treturn &Handler{service: svc}\n}\n\nfunc (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {\n\t_ = json.NewEncoder(w).Encode(map[string]string{\"domain\": \"{{featureNameSnake}}\"})\n}\n"
+      },
+      {
+        "type": "file",
+        "path": "internal/{{featureNameSnake}}/service.go",
+        "content": "package {{featureNameSnake}}\n\ntype Service struct{}\n\nfunc NewService() *Service {\n\treturn &Service{}\n}\n"
+      }
+    ]
+  },
+  "entries": [
+    {
+      "type": "directory",
+      "path": "internal/platform/config"
+    },
+    {
+      "type": "directory",
+      "path": "internal/platform/database"
+    },
+    {
+      "type": "directory",
+      "path": "internal/platform/logging"
+    },
+    {
+      "type": "directory",
+      "path": "internal/platform/telemetry"
+    },
+    {
+      "type": "file",
+      "path": "go.mod",
+      "source": "template/go.mod"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "cmd/api/main.go",
+      "source": "template/cmd/api/main.go"
+    },
+    {
+      "type": "file",
+      "path": "internal/app/application.go",
+      "source": "template/internal/app/application.go"
+    }
+  ]
+}

@@ -4,6 +4,13 @@ import { StructgenError } from "../core/errors.js";
 import type { Primitive } from "../core/types.js";
 import type { VariablePrompter } from "../engine/variables.js";
 
+export interface PromptOption<T> {
+  label: string;
+  value: T;
+  hint?: string | undefined;
+  recommended?: boolean | undefined;
+}
+
 export class TerminalPrompter implements VariablePrompter {
   async input(prompt: string, defaultValue?: string, required = false): Promise<string> {
     this.assertInteractive();
@@ -64,6 +71,65 @@ export class TerminalPrompter implements VariablePrompter {
       }
       stdout.write(`Invalid selection. Please choose a number between 1 and ${choices.length}.\n`);
     }
+  }
+
+  async selectObject<T>(prompt: string, options: PromptOption<T>[], defaultIndex = 1): Promise<T> {
+    this.assertInteractive();
+    stdout.write(`${prompt}\n`);
+    options.forEach((opt, idx) => {
+      const rec = opt.recommended ? " (recommended)" : "";
+      const hint = opt.hint ? ` - ${opt.hint}` : "";
+      stdout.write(`  ${idx + 1}. ${opt.label}${rec}${hint}\n`);
+    });
+
+    while (true) {
+      const answer = await this.input("Select choice", String(defaultIndex));
+      const idx = Number.parseInt(answer, 10) - 1;
+      const selectedOpt = options[idx];
+      if (selectedOpt !== undefined) {
+        return selectedOpt.value;
+      }
+      stdout.write(`Invalid selection. Choose 1-${options.length}.\n`);
+    }
+  }
+
+  async multiselect<T>(
+    prompt: string,
+    options: PromptOption<T>[],
+    defaults: T[] = []
+  ): Promise<T[]> {
+    if (options.length === 0) return [];
+    this.assertInteractive();
+    stdout.write(`${prompt} (comma-separated numbers, or 'none'/'all')\n`);
+
+    const defaultSet = new Set(defaults);
+    options.forEach((opt, idx) => {
+      const isDef = defaultSet.has(opt.value) ? " [X]" : " [ ]";
+      const hint = opt.hint ? ` - ${opt.hint}` : "";
+      stdout.write(`  ${idx + 1}.${isDef} ${opt.label}${hint}\n`);
+    });
+
+    const answer = await this.input("Select options (Enter to accept defaults)");
+    if (answer === "") {
+      return defaults;
+    }
+    if (answer.toLowerCase() === "none") {
+      return [];
+    }
+    if (answer.toLowerCase() === "all") {
+      return options.map((o) => o.value);
+    }
+
+    const selected: T[] = [];
+    const parts = answer.split(",").map((s) => s.trim());
+    for (const part of parts) {
+      const idx = Number.parseInt(part, 10) - 1;
+      const opt = options[idx];
+      if (opt !== undefined) {
+        selected.push(opt.value);
+      }
+    }
+    return selected;
   }
 
   private assertInteractive(): void {

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "postgres",
+  "name": "PostgreSQL Database",
+  "category": "database",
+  "description": "PostgreSQL relational database connection configuration.",
+  "compatibleWith": {
+    "projectTypes": ["backend-service", "worker"],
+    "languages": ["python", "java", "go", "typescript"]
+  }
+}

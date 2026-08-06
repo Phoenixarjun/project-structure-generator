@@ -9,6 +9,7 @@ export const WORKSPACE_DIRECTORY_NAME = ".structgen";
 export const VAULT_DIRECTORY_NAME = "vault";
 export const BLUEPRINT_FILE_NAME = "blueprint.json";
 export const GENERATION_METADATA_FILE_NAME = ".structgen.json";
+export const PROVENANCE_FILE_NAME = ".structgen.json";
 export const BLUEPRINT_SCHEMA_VERSION = 1;
 export const MINIMUM_NODE_MAJOR = 24;
 

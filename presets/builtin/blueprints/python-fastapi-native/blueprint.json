@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "id": "python-fastapi-native",
+  "version": "1.0.0",
+  "name": "FastAPI Native",
+  "description": "Prototype and small Standard FastAPI services.",
+  "projectType": "backend-service",
+  "language": "python",
+  "framework": "fastapi",
+  "organization": "native",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "prototype",
+  "supportedCapabilities": [
+    "unit-tests",
+    "integration-tests",
+    "docker",
+    "docker-compose",
+    "github-actions",
+    "postgres",
+    "redis",
+    "kafka",
+    "structured-logging",
+    "opentelemetry",
+    "documentation-showcase"
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    },
+    {
+      "name": "pythonPackageName",
+      "prompt": "Python package name",
+      "type": "string",
+      "default": "{{projectName}}",
+      "transform": "snake"
+    }
+  ],
+  "entries": [
+    {
+      "type": "directory",
+      "path": "src/{{pythonPackageName}}/routers"
+    },
+    {
+      "type": "directory",
+      "path": "src/{{pythonPackageName}}/schemas"
+    },
+    {
+      "type": "directory",
+      "path": "src/{{pythonPackageName}}/services"
+    },
+    {
+      "type": "directory",
+      "path": "tests/unit"
+    },
+    {
+      "type": "directory",
+      "path": "tests/integration"
+    },
+    {
+      "type": "file",
+      "path": "pyproject.toml",
+      "source": "template/pyproject.toml"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/__init__.py",
+      "source": "template/src/__init__.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/main.py",
+      "source": "template/src/main.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/config.py",
+      "source": "template/src/config.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/dependencies.py",
+      "source": "template/src/dependencies.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/routers/__init__.py",
+      "source": "template/src/routers/__init__.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/routers/health.py",
+      "source": "template/src/routers/health.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/schemas/health.py",
+      "source": "template/src/schemas/health.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/services/health.py",
+      "source": "template/src/services/health.py"
+    },
+    {
+      "type": "file",
+      "path": "tests/unit/test_health.py",
+      "source": "template/tests/unit/test_health.py"
+    }
+  ]
+}

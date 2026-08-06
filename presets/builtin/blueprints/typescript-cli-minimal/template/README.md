@@ -1,0 +1,3 @@
+# {{projectName}}
+
+Minimal TypeScript CLI.

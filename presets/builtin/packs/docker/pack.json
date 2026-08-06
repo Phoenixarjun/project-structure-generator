@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "docker",
+  "name": "Docker",
+  "category": "infrastructure",
+  "description": "Adds Docker containerization files.",
+  "files": [
+    {
+      "type": "file",
+      "path": "Dockerfile",
+      "source": "template/Dockerfile"
+    }
+  ]
+}

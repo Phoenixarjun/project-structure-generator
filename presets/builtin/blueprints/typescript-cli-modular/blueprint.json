@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "id": "typescript-cli-modular",
+  "version": "1.0.0",
+  "name": "TypeScript Modular CLI",
+  "description": "Production TypeScript CLI with clear adapter, core, and infrastructure separation.",
+  "projectType": "cli",
+  "language": "typescript",
+  "framework": "typescript-node",
+  "organization": "modular",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "operational",
+  "supportedCapabilities": [
+    "unit-tests",
+    "integration-tests",
+    "docker",
+    "github-actions",
+    "structured-logging",
+    "documentation-showcase"
+  ],
+  "maturityDefaults": {
+    "prototype": ["unit-tests"],
+    "standard": ["unit-tests", "integration-tests", "github-actions"],
+    "operational": ["unit-tests", "integration-tests", "docker", "github-actions", "structured-logging"]
+  },
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    },
+    {
+      "name": "cliCommand",
+      "prompt": "CLI binary command name",
+      "type": "string",
+      "default": "{{projectName}}",
+      "transform": "kebab"
+    }
+  ],
+  "entries": [
+    {
+      "type": "directory",
+      "path": "src/cli/args"
+    },
+    {
+      "type": "directory",
+      "path": "src/cli/commands"
+    },
+    {
+      "type": "directory",
+      "path": "src/cli/output"
+    },
+    {
+      "type": "directory",
+      "path": "src/cli/prompt"
+    },
+    {
+      "type": "directory",
+      "path": "src/application"
+    },
+    {
+      "type": "directory",
+      "path": "src/core/errors"
+    },
+    {
+      "type": "directory",
+      "path": "src/core/types"
+    },
+    {
+      "type": "directory",
+      "path": "src/core/validation"
+    },
+    {
+      "type": "directory",
+      "path": "src/infrastructure/config"
+    },
+    {
+      "type": "directory",
+      "path": "src/infrastructure/filesystem"
+    },
+    {
+      "type": "directory",
+      "path": "src/infrastructure/process"
+    },
+    {
+      "type": "file",
+      "path": "package.json",
+      "source": "template/package.json"
+    },
+    {
+      "type": "file",
+      "path": "tsconfig.json",
+      "source": "template/tsconfig.json"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "src/index.ts",
+      "source": "template/src/index.ts"
+    },
+    {
+      "type": "file",
+      "path": "src/core/errors/app-error.ts",
+      "source": "template/src/core/errors/app-error.ts"
+    },
+    {
+      "type": "file",
+      "path": "src/cli/commands/hello.ts",
+      "source": "template/src/cli/commands/hello.ts"
+    },
+    {
+      "type": "file",
+      "path": "tests/unit/hello.test.ts",
+      "source": "template/tests/unit/hello.test.ts"
+    }
+  ]
+}

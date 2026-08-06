@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/PhoenixArjun/project-structure-generator/schema/provenance.schema.json",
+  "title": "Project Structure Generator Provenance",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generator",
+    "generatorVersion",
+    "generatedAt",
+    "blueprint",
+    "maturity",
+    "capabilities",
+    "variables",
+    "files"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "generator": {
+      "type": "string"
+    },
+    "generatorVersion": {
+      "type": "string"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "blueprint": {
+      "type": "object",
+      "required": ["kind", "id", "source"],
+      "properties": {
+        "kind": { "type": "string" },
+        "id": { "type": "string" },
+        "source": { "type": "string" },
+        "version": { "type": "string" }
+      }
+    },
+    "maturity": {
+      "enum": ["prototype", "standard", "operational"]
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "id", "source"],
+        "properties": {
+          "kind": { "type": "string" },
+          "id": { "type": "string" },
+          "source": { "type": "string" },
+          "version": { "type": "string" }
+        }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "required": ["kind", "id", "source"],
+      "properties": {
+        "kind": { "type": "string" },
+        "id": { "type": "string" },
+        "source": { "type": "string" }
+      }
+    },
+    "variables": {
+      "type": "object"
+    },
+    "files": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

@@ -10,7 +10,7 @@ import { temporaryDirectory } from "./helpers.js";
 void test("generates a built-in project and metadata", async () => {
   const temp = await temporaryDirectory("structgen-generation-");
   try {
-    const blueprintDirectory = path.resolve("presets/builtin/python-fastapi-clean");
+    const blueprintDirectory = path.resolve("presets/builtin/blueprints/python-fastapi-native");
     const record = await loadBlueprintDirectory(blueprintDirectory, {
       kind: "builtin",
       path: path.dirname(blueprintDirectory),
@@ -18,9 +18,7 @@ void test("generates a built-in project and metadata", async () => {
     });
     const output = path.join(temp.path, "billing-runtime");
     const values = {
-      projectName: "billing-runtime",
-      packageName: "billing_runtime",
-      includeDocker: true
+      projectName: "billing-runtime"
     };
     const plan = await createGenerationPlan(record, output, values);
     const result = await writeGenerationPlan(plan, { force: false, dryRun: false });
@@ -29,7 +27,7 @@ void test("generates a built-in project and metadata", async () => {
     const main = await readFile(path.join(output, "src", "billing_runtime", "main.py"), "utf8");
     assert.match(main, /billing_runtime/);
     const metadata = JSON.parse(await readFile(path.join(output, ".structgen.json"), "utf8")) as { blueprint: { id: string } };
-    assert.equal(metadata.blueprint.id, "python-fastapi-clean");
+    assert.equal(metadata.blueprint.id, "python-fastapi-native");
   } finally {
     await temp.cleanup();
   }
@@ -38,14 +36,14 @@ void test("generates a built-in project and metadata", async () => {
 void test("refuses to overwrite existing files without force", async () => {
   const temp = await temporaryDirectory("structgen-conflict-");
   try {
-    const blueprintDirectory = path.resolve("presets/builtin/typescript-cli-modular");
+    const blueprintDirectory = path.resolve("presets/builtin/blueprints/typescript-cli-modular");
     const record = await loadBlueprintDirectory(blueprintDirectory, {
       kind: "builtin",
       path: path.dirname(blueprintDirectory),
       label: "test"
     });
     const output = path.join(temp.path, "tool");
-    const values = { projectName: "tool", packageName: "tool", commandName: "tool" };
+    const values = { projectName: "tool" };
     const plan = await createGenerationPlan(record, output, values);
     await writeGenerationPlan(plan, { force: false, dryRun: false });
     await assert.rejects(

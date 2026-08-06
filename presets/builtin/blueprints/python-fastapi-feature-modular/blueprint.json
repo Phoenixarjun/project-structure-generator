@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "id": "python-fastapi-feature-modular",
+  "version": "1.0.0",
+  "name": "FastAPI Feature Modular",
+  "description": "FastAPI backend organized by business feature.",
+  "projectType": "backend-service",
+  "language": "python",
+  "framework": "fastapi",
+  "organization": "feature-modular",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "standard",
+  "supportedCapabilities": [
+    "unit-tests",
+    "integration-tests",
+    "docker",
+    "docker-compose",
+    "github-actions",
+    "postgres",
+    "redis",
+    "structured-logging",
+    "opentelemetry",
+    "documentation-showcase"
+  ],
+  "maturityDefaults": {
+    "prototype": ["unit-tests"],
+    "standard": ["unit-tests", "docker"],
+    "operational": ["unit-tests", "docker", "structured-logging", "opentelemetry"]
+  },
+  "extensionPoints": [
+    {
+      "id": "application-imports",
+      "description": "Imports block for FastAPI main module",
+      "targetFile": "src/{{packageNameSnake}}/main.py",
+      "marker": "# {{EXTENSION_POINT:application-imports}}"
+    },
+    {
+      "id": "application-bootstrap",
+      "description": "Middleware and setup block for FastAPI app",
+      "targetFile": "src/{{packageNameSnake}}/main.py",
+      "marker": "# {{EXTENSION_POINT:application-bootstrap}}"
+    }
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    },
+    {
+      "name": "packageName",
+      "prompt": "Package name",
+      "type": "string",
+      "default": "{{projectName}}",
+      "transform": "snake"
+    }
+  ],
+  "featureTemplate": {
+    "variables": ["featureName"],
+    "directories": [
+      {
+        "type": "directory",
+        "path": "src/{{packageNameSnake}}/features/{{featureNameSnake}}"
+      }
+    ],
+    "files": [
+      {
+        "type": "file",
+        "path": "src/{{packageNameSnake}}/features/{{featureNameSnake}}/__init__.py",
+        "content": ""
+      },
+      {
+        "type": "file",
+        "path": "src/{{packageNameSnake}}/features/{{featureNameSnake}}/router.py",
+        "content": "from fastapi import APIRouter\n\nrouter = APIRouter(prefix=\"/{{featureNameKebab}}\", tags=[\"{{featureNameKebab}}\"])\n\n@router.get(\"\")\ndef get_{{featureNameSnake}}():\n    return {\"feature\": \"{{featureNameKebab}}\"}\n"
+      }
+    ]
+  },
+  "entries": [
+    {
+      "type": "directory",
+      "path": "src/{{packageNameSnake}}"
+    },
+    {
+      "type": "file",
+      "path": "pyproject.toml",
+      "source": "template/pyproject.toml"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "src/{{packageNameSnake}}/__init__.py",
+      "content": ""
+    },
+    {
+      "type": "file",
+      "path": "src/{{packageNameSnake}}/main.py",
+      "source": "template/src/main.py"
+    }
+  ]
+}

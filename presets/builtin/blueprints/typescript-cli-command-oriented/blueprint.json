@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "id": "typescript-cli-command-oriented",
+  "version": "1.0.0",
+  "name": "TypeScript Command-Oriented CLI",
+  "description": "TypeScript CLI organized around command modules.",
+  "projectType": "cli",
+  "language": "typescript",
+  "framework": "typescript-node",
+  "organization": "command-oriented",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "standard",
+  "supportedCapabilities": [
+    "unit-tests",
+    "docker",
+    "github-actions",
+    "structured-logging"
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    }
+  ],
+  "entries": [
+    {
+      "type": "directory",
+      "path": "src/commands"
+    },
+    {
+      "type": "file",
+      "path": "package.json",
+      "source": "template/package.json"
+    },
+    {
+      "type": "file",
+      "path": "tsconfig.json",
+      "source": "template/tsconfig.json"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "src/index.ts",
+      "source": "template/src/index.ts"
+    }
+  ]
+}

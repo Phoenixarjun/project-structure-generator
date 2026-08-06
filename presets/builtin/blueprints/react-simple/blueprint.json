@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "id": "react-simple",
+  "version": "1.0.0",
+  "name": "React Simple",
+  "description": "Standard React Vite TypeScript single-page application.",
+  "projectType": "frontend-application",
+  "language": "typescript",
+  "framework": "react",
+  "organization": "simple",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "standard",
+  "supportedCapabilities": [
+    "unit-tests",
+    "integration-tests",
+    "github-actions",
+    "docker",
+    "structured-logging",
+    "documentation-showcase"
+  ],
+  "incompatibleCapabilities": ["postgres", "redis", "kafka"],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    }
+  ],
+  "entries": [
+    {
+      "type": "directory",
+      "path": "src/components"
+    },
+    {
+      "type": "directory",
+      "path": "src/hooks"
+    },
+    {
+      "type": "directory",
+      "path": "src/pages"
+    },
+    {
+      "type": "directory",
+      "path": "src/services"
+    },
+    {
+      "type": "directory",
+      "path": "src/types"
+    },
+    {
+      "type": "directory",
+      "path": "src/utils"
+    },
+    {
+      "type": "file",
+      "path": "package.json",
+      "source": "template/package.json"
+    },
+    {
+      "type": "file",
+      "path": "tsconfig.json",
+      "source": "template/tsconfig.json"
+    },
+    {
+      "type": "file",
+      "path": "vite.config.ts",
+      "source": "template/vite.config.ts"
+    },
+    {
+      "type": "file",
+      "path": "index.html",
+      "source": "template/index.html"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "src/main.tsx",
+      "source": "template/src/main.tsx"
+    },
+    {
+      "type": "file",
+      "path": "src/App.tsx",
+      "source": "template/src/App.tsx"
+    }
+  ]
+}

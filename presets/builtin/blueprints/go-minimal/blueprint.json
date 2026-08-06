@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "id": "go-minimal",
+  "version": "1.0.0",
+  "name": "Go Minimal",
+  "description": "Minimal idiomatic Go HTTP service or CLI utility.",
+  "projectType": "backend-service",
+  "language": "go",
+  "framework": "go-standard-library",
+  "organization": "minimal",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "prototype",
+  "supportedCapabilities": [
+    "unit-tests",
+    "integration-tests",
+    "docker",
+    "docker-compose",
+    "github-actions",
+    "postgres",
+    "redis",
+    "structured-logging",
+    "opentelemetry",
+    "documentation-showcase"
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    },
+    {
+      "name": "goModule",
+      "prompt": "Go module path",
+      "type": "string",
+      "default": "example.com/{{projectName}}",
+      "required": true
+    }
+  ],
+  "entries": [
+    {
+      "type": "file",
+      "path": "go.mod",
+      "source": "template/go.mod"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "main.go",
+      "source": "template/main.go"
+    },
+    {
+      "type": "file",
+      "path": "config.go",
+      "source": "template/config.go"
+    },
+    {
+      "type": "file",
+      "path": "handler.go",
+      "source": "template/handler.go"
+    },
+    {
+      "type": "file",
+      "path": "service.go",
+      "source": "template/service.go"
+    },
+    {
+      "type": "file",
+      "path": "handler_test.go",
+      "source": "template/handler_test.go"
+    }
+  ]
+}

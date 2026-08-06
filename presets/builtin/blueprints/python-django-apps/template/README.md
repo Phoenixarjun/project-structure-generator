@@ -1,0 +1,3 @@
+# {{projectName}}
+
+Django Apps structure.

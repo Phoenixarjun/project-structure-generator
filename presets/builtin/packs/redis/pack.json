@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "redis",
+  "name": "Redis Cache",
+  "category": "cache",
+  "description": "Redis key-value cache and session store configuration.",
+  "compatibleWith": {
+    "projectTypes": ["backend-service", "worker"],
+    "languages": ["python", "java", "go", "typescript"]
+  }
+}

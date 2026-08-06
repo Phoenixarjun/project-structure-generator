@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "id": "typescript-cli-minimal",
+  "version": "1.0.0",
+  "name": "TypeScript Minimal CLI",
+  "description": "Minimal single-file TypeScript CLI application.",
+  "projectType": "cli",
+  "language": "typescript",
+  "framework": "typescript-node",
+  "organization": "minimal",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "prototype",
+  "supportedCapabilities": [
+    "unit-tests",
+    "integration-tests",
+    "docker",
+    "github-actions",
+    "structured-logging",
+    "documentation-showcase"
+  ],
+  "maturityDefaults": {
+    "prototype": ["unit-tests"],
+    "standard": ["unit-tests", "github-actions"],
+    "operational": ["unit-tests", "github-actions", "structured-logging"]
+  },
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    },
+    {
+      "name": "cliCommand",
+      "prompt": "CLI binary command name",
+      "type": "string",
+      "default": "{{projectName}}",
+      "transform": "kebab"
+    }
+  ],
+  "entries": [
+    {
+      "type": "file",
+      "path": "package.json",
+      "source": "template/package.json"
+    },
+    {
+      "type": "file",
+      "path": "tsconfig.json",
+      "source": "template/tsconfig.json"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "src/index.ts",
+      "source": "template/src/index.ts"
+    }
+  ]
+}

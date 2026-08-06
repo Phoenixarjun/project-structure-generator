@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "nextjs-standard-application",
+  "name": "Next.js Standard Application",
+  "description": "Standard Next.js App Router application profile",
+  "selection": {
+    "projectType": "frontend-application",
+    "language": "typescript",
+    "framework": "nextjs",
+    "blueprint": "nextjs-app-router-native",
+    "maturity": "standard",
+    "capabilities": [
+      "unit-tests",
+      "docker",
+      "github-actions"
+    ]
+  },
+  "output": "{{projectName}}"
+}

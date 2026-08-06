@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "id": "python-flask-layered",
+  "version": "1.0.0",
+  "name": "Flask Layered",
+  "description": "Layered Flask architecture using Blueprints for API controllers.",
+  "projectType": "backend-service",
+  "language": "python",
+  "framework": "flask",
+  "organization": "layered",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "standard",
+  "supportedCapabilities": [
+    "unit-tests",
+    "integration-tests",
+    "docker",
+    "docker-compose",
+    "github-actions",
+    "postgres",
+    "redis",
+    "kafka",
+    "structured-logging",
+    "opentelemetry",
+    "documentation-showcase"
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    },
+    {
+      "name": "pythonPackageName",
+      "prompt": "Python package name",
+      "type": "string",
+      "default": "{{projectName}}",
+      "transform": "snake"
+    }
+  ],
+  "entries": [
+    {
+      "type": "directory",
+      "path": "src/{{pythonPackageName}}/repositories"
+    },
+    {
+      "type": "directory",
+      "path": "src/{{pythonPackageName}}/models"
+    },
+    {
+      "type": "directory",
+      "path": "src/{{pythonPackageName}}/infrastructure"
+    },
+    {
+      "type": "directory",
+      "path": "tests/unit"
+    },
+    {
+      "type": "directory",
+      "path": "tests/integration"
+    },
+    {
+      "type": "file",
+      "path": "pyproject.toml",
+      "source": "template/pyproject.toml"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/__init__.py",
+      "source": "template/src/__init__.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/app.py",
+      "source": "template/src/app.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/core/__init__.py",
+      "source": "template/src/core/__init__.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/api/__init__.py",
+      "source": "template/src/api/__init__.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/services/__init__.py",
+      "source": "template/src/services/__init__.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{pythonPackageName}}/schemas/__init__.py",
+      "source": "template/src/schemas/__init__.py"
+    },
+    {
+      "type": "file",
+      "path": "tests/unit/test_app.py",
+      "source": "template/tests/unit/test_app.py"
+    }
+  ]
+}

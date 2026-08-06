@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "id": "java-spring-modular-monolith",
+  "version": "1.0.0",
+  "name": "Java Spring Boot Modular Monolith",
+  "description": "Java Spring Boot modular monolith architecture using Spring Modulith.",
+  "projectType": "backend-service",
+  "language": "java",
+  "framework": "spring-boot",
+  "organization": "modular-monolith",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "operational",
+  "supportedCapabilities": [
+    "unit-tests",
+    "integration-tests",
+    "docker",
+    "docker-compose",
+    "github-actions",
+    "postgres",
+    "redis",
+    "kafka",
+    "structured-logging",
+    "opentelemetry",
+    "documentation-showcase"
+  ],
+  "extensionPoints": [
+    {
+      "id": "application-imports",
+      "targetFile": "src/main/java/{{javaPackagePath}}/Application.java",
+      "token": "/* {{EXTENSION_POINT:application-imports}} */"
+    },
+    {
+      "id": "application-bootstrap",
+      "targetFile": "src/main/java/{{javaPackagePath}}/Application.java",
+      "token": "/* {{EXTENSION_POINT:application-bootstrap}} */"
+    }
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    },
+    {
+      "name": "groupId",
+      "prompt": "Maven group ID",
+      "type": "string",
+      "default": "com.example"
+    },
+    {
+      "name": "artifactId",
+      "prompt": "Maven artifact ID",
+      "type": "string",
+      "default": "{{projectName}}",
+      "transform": "kebab"
+    },
+    {
+      "name": "javaPackage",
+      "prompt": "Java base package name",
+      "type": "string",
+      "default": "{{groupId}}.{{projectNameCamel}}"
+    }
+  ],
+  "entries": [
+    {
+      "type": "directory",
+      "path": "src/main/java/{{javaPackagePath}}/shared"
+    },
+    {
+      "type": "directory",
+      "path": "src/main/java/{{javaPackagePath}}/order/domain"
+    },
+    {
+      "type": "directory",
+      "path": "src/main/java/{{javaPackagePath}}/order/internal"
+    },
+    {
+      "type": "directory",
+      "path": "src/main/java/{{javaPackagePath}}/billing/domain"
+    },
+    {
+      "type": "directory",
+      "path": "src/main/java/{{javaPackagePath}}/billing/internal"
+    },
+    {
+      "type": "file",
+      "path": "build.gradle.kts",
+      "source": "template/build.gradle.kts"
+    },
+    {
+      "type": "file",
+      "path": "settings.gradle.kts",
+      "source": "template/settings.gradle.kts"
+    },
+    {
+      "type": "file",
+      "path": "gradlew",
+      "source": "template/gradlew",
+      "executable": true
+    },
+    {
+      "type": "file",
+      "path": "gradlew.bat",
+      "source": "template/gradlew.bat"
+    },
+    {
+      "type": "file",
+      "path": "gradle/wrapper/gradle-wrapper.properties",
+      "source": "template/gradle/wrapper/gradle-wrapper.properties"
+    },
+    {
+      "type": "file",
+      "path": "gradle/wrapper/gradle-wrapper.jar",
+      "source": "template/gradle/wrapper/gradle-wrapper.jar",
+      "binary": true
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "src/main/resources/application.yml",
+      "source": "template/src/main/resources/application.yml"
+    },
+    {
+      "type": "file",
+      "path": "src/main/java/{{javaPackagePath}}/Application.java",
+      "source": "template/Application.java"
+    },
+    {
+      "type": "file",
+      "path": "src/main/java/{{javaPackagePath}}/order/package-info.java",
+      "source": "template/order/package-info.java"
+    },
+    {
+      "type": "file",
+      "path": "src/main/java/{{javaPackagePath}}/billing/package-info.java",
+      "source": "template/billing/package-info.java"
+    },
+    {
+      "type": "file",
+      "path": "src/test/java/{{javaPackagePath}}/ModularityTests.java",
+      "source": "template/src/test/java/ModularityTests.java"
+    }
+  ]
+}

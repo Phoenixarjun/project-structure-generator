@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "id": "nextjs-app-router-native",
+  "version": "1.0.0",
+  "name": "Next.js App Router Native",
+  "description": "Standard Next.js App Router application structure.",
+  "projectType": "frontend-application",
+  "language": "typescript",
+  "framework": "nextjs",
+  "organization": "native",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "standard",
+  "supportedCapabilities": [
+    "unit-tests",
+    "integration-tests",
+    "docker",
+    "github-actions",
+    "postgres",
+    "redis",
+    "structured-logging",
+    "opentelemetry",
+    "documentation-showcase"
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    }
+  ],
+  "entries": [
+    {
+      "type": "directory",
+      "path": "src/app/api/health"
+    },
+    {
+      "type": "file",
+      "path": "package.json",
+      "source": "template/package.json"
+    },
+    {
+      "type": "file",
+      "path": "tsconfig.json",
+      "source": "template/tsconfig.json"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "src/app/layout.tsx",
+      "source": "template/src/app/layout.tsx"
+    },
+    {
+      "type": "file",
+      "path": "src/app/page.tsx",
+      "source": "template/src/app/page.tsx"
+    },
+    {
+      "type": "file",
+      "path": "src/app/api/health/route.ts",
+      "source": "template/src/app/api/health/route.ts"
+    }
+  ]
+}

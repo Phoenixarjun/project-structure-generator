@@ -1,9 +1,10 @@
 {
   "name": "@naresh007/project-structure-generator",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Deterministic project scaffolding from reusable filesystem-based blueprints.",
   "type": "module",
   "bin": {
+    "project-structure-generator": "./dist/src/cli.js",
     "structgen": "./dist/src/cli.js"
   },
   "exports": {
@@ -24,8 +25,8 @@
     "clean": "node -e \"import('node:fs').then(fs=>fs.rmSync('dist',{recursive:true,force:true}))\"",
     "build": "npm run clean && tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "npm run build && node --test dist/tests/*.test.js",
-    "test:coverage": "npm run build && node --experimental-test-coverage --test dist/tests/*.test.js",
+    "test": "tsc -p tsconfig.json && node --test --test-concurrency=1 dist/tests/*.test.js",
+    "test:coverage": "tsc -p tsconfig.json && node --experimental-test-coverage --test --test-concurrency=1 dist/tests/*.test.js",
     "dev": "npm run build && node dist/src/cli.js",
     "prepack": "npm test"
   },

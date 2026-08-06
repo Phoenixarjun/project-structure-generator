@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "helm",
+  "name": "Helm Deployment Chart",
+  "category": "deployment",
+  "description": "Helm chart deployment package under deploy/helm/{{projectName}}.",
+  "conflictsWith": ["kubernetes"],
+  "compatibleWith": {
+    "projectTypes": ["backend-service", "frontend-application", "fullstack-application", "worker"],
+    "languages": ["python", "java", "go", "typescript"]
+  },
+  "directories": [
+    {
+      "type": "directory",
+      "path": "deploy/helm/{{projectName}}/templates"
+    }
+  ],
+  "files": [
+    {
+      "type": "file",
+      "path": "deploy/helm/{{projectName}}/Chart.yaml",
+      "source": "template/Chart.yaml"
+    },
+    {
+      "type": "file",
+      "path": "deploy/helm/{{projectName}}/values.yaml",
+      "source": "template/values.yaml"
+    }
+  ]
+}

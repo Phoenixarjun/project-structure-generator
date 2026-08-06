@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "opentelemetry",
+  "name": "OpenTelemetry Tracing",
+  "category": "observability",
+  "description": "Adds OpenTelemetry tracing middleware and instrumentation.",
+  "contributions": [
+    {
+      "extensionPointId": "application-imports",
+      "content": "# OpenTelemetry Tracing\nimport logging"
+    },
+    {
+      "extensionPointId": "application-bootstrap",
+      "content": "# OpenTelemetry Bootstrap Setup\nlogging.info('OpenTelemetry initialized')"
+    }
+  ]
+}

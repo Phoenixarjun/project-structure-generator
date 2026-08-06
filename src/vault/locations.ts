@@ -54,3 +54,17 @@ export function explicitVaults(values: string[]): VaultLocation[] {
     label: `explicit:${index + 1}`
   }));
 }
+
+export function resolveVaultSequence(
+  explicitPaths: string[] = [],
+  config?: LoadedConfig,
+  startDir = process.cwd()
+): VaultLocation[] {
+  return [
+    ...explicitVaults(explicitPaths),
+    ...configVaults(config),
+    workspaceVault(startDir),
+    userVault(),
+    builtInVault()
+  ];
+}

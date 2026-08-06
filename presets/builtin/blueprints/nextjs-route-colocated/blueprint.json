@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "id": "nextjs-route-colocated",
+  "version": "1.0.0",
+  "name": "Next.js Route-Colocated",
+  "description": "Next.js App Router using route groups and colocated private folders.",
+  "projectType": "frontend-application",
+  "language": "typescript",
+  "framework": "nextjs",
+  "organization": "route-colocated",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "standard",
+  "supportedCapabilities": [
+    "unit-tests",
+    "integration-tests",
+    "docker",
+    "github-actions",
+    "postgres",
+    "redis",
+    "structured-logging",
+    "opentelemetry",
+    "documentation-showcase"
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    }
+  ],
+  "entries": [
+    {
+      "type": "directory",
+      "path": "src/app/(public)/_components"
+    },
+    {
+      "type": "directory",
+      "path": "src/app/(dashboard)/_components"
+    },
+    {
+      "type": "directory",
+      "path": "src/app/(dashboard)/_hooks"
+    },
+    {
+      "type": "file",
+      "path": "package.json",
+      "source": "template/package.json"
+    },
+    {
+      "type": "file",
+      "path": "tsconfig.json",
+      "source": "template/tsconfig.json"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "src/app/layout.tsx",
+      "source": "template/src/app/layout.tsx"
+    },
+    {
+      "type": "file",
+      "path": "src/app/(public)/page.tsx",
+      "source": "template/src/app/(public)/page.tsx"
+    },
+    {
+      "type": "file",
+      "path": "src/app/(dashboard)/dashboard/page.tsx",
+      "source": "template/src/app/(dashboard)/dashboard/page.tsx"
+    }
+  ]
+}

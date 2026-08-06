@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "go-operational-service",
+  "name": "Go Operational Service",
+  "description": "Production Go domain-modular service profile",
+  "selection": {
+    "projectType": "backend-service",
+    "language": "go",
+    "framework": "go-standard-library",
+    "blueprint": "go-domain-modular",
+    "maturity": "operational",
+    "capabilities": [
+      "unit-tests",
+      "integration-tests",
+      "docker",
+      "docker-compose",
+      "github-actions",
+      "postgres",
+      "structured-logging"
+    ]
+  },
+  "output": "{{projectName}}"
+}

@@ -57,6 +57,8 @@ void test("rejects a symlink target root", { skip: process.platform === "win32" 
         manifestPath: path.join(temp.path, "blueprint.json"),
         vault: { kind: "explicit", path: temp.path, label: "test" }
       },
+      maturity: "standard",
+      packs: [],
       targetDirectory: linked,
       variables: {},
       entries: [{ type: "file", relativePath: "README.md", content: Buffer.from("x") }]

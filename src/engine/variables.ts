@@ -68,23 +68,36 @@ export async function resolveVariables(
 ): Promise<Record<string, Primitive>> {
   const known = new Set(variables.map((variable) => variable.name));
   for (const name of Object.keys(provided)) {
-    if (!known.has(name)) {
+    const isKnown = known.has(name) || Array.from(known).some((k) => name.startsWith(k));
+    if (!isKnown) {
       throw new StructgenError("UNKNOWN_VARIABLE", `Unknown blueprint variable: ${name}`);
     }
   }
 
   const values: Record<string, Primitive> = {};
 
+  const setValue = (name: string, val: Primitive) => {
+    values[name] = val;
+    if (typeof val === "string") {
+      const derived = applyTransforms(val, name);
+      for (const [dKey, dVal] of Object.entries(derived)) {
+        if (values[dKey] === undefined) {
+          values[dKey] = dVal;
+        }
+      }
+    }
+  };
+
   for (const variable of variables) {
     if (provided[variable.name] !== undefined) {
-      values[variable.name] = coerce(variable, provided[variable.name] ?? null);
+      setValue(variable.name, coerce(variable, provided[variable.name] ?? null));
       continue;
     }
 
     const defaultValue = resolveDefault(variable, values);
     if (variable.internal) {
       if (defaultValue !== undefined) {
-        values[variable.name] = defaultValue;
+        setValue(variable.name, defaultValue);
         continue;
       }
       throw new StructgenError("MISSING_VARIABLE", `Internal variable ${variable.name} requires a default`);
@@ -92,32 +105,56 @@ export async function resolveVariables(
 
     if (!interactive || !prompter) {
       if (defaultValue !== undefined) {
-        values[variable.name] = defaultValue;
+        setValue(variable.name, defaultValue);
         continue;
       }
       if (variable.required !== false) {
         throw new StructgenError("MISSING_VARIABLE", `Missing required variable: ${variable.name}`);
       }
-      values[variable.name] = "";
+      setValue(variable.name, "");
       continue;
     }
 
     if (variable.type === "boolean") {
       const defaultBool = typeof defaultValue === "boolean" ? defaultValue : false;
-      values[variable.name] = await prompter.confirm(variable.prompt, defaultBool);
+      setValue(variable.name, await prompter.confirm(variable.prompt, defaultBool));
       continue;
     }
 
     if (variable.type === "select") {
-      values[variable.name] = await prompter.select(variable.prompt, variable.choices ?? [], defaultValue);
+      setValue(variable.name, await prompter.select(variable.prompt, variable.choices ?? [], defaultValue));
       continue;
     }
 
     const defaultStr = defaultValue !== undefined ? String(defaultValue) : undefined;
     const required = variable.required !== false && defaultStr === undefined;
     const response = await prompter.input(variable.prompt, defaultStr, required);
-    values[variable.name] = coerce(variable, response);
+    setValue(variable.name, coerce(variable, response));
   }
 
-  return values;
+  const finalValues: Record<string, Primitive> = { ...values };
+  for (const [key, val] of Object.entries(values)) {
+    if (typeof val === "string") {
+      const derived = applyTransforms(val, key);
+      for (const [dKey, dVal] of Object.entries(derived)) {
+        if (finalValues[dKey] === undefined) {
+          finalValues[dKey] = dVal;
+        }
+      }
+    }
+  }
+
+  return finalValues;
+}
+
+export function applyTransforms(value: string, prefix: string): Record<string, string> {
+  return {
+    [prefix]: value,
+    [`${prefix}Kebab`]: String(transformValue(value, "kebab")),
+    [`${prefix}Snake`]: String(transformValue(value, "snake")),
+    [`${prefix}Camel`]: String(transformValue(value, "camel")),
+    [`${prefix}Pascal`]: String(transformValue(value, "pascal")),
+    [`${prefix}Constant`]: String(transformValue(value, "constant")),
+    [`${prefix}Path`]: value.replace(/\./g, "/")
+  };
 }

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "spring-modular-service",
+  "name": "Spring Boot Modular Service",
+  "description": "Standard Java Spring Boot Modular Monolith service profile",
+  "selection": {
+    "projectType": "backend-service",
+    "language": "java",
+    "framework": "spring-boot",
+    "blueprint": "java-spring-modular-monolith",
+    "maturity": "operational",
+    "capabilities": [
+      "unit-tests",
+      "integration-tests",
+      "docker",
+      "docker-compose",
+      "github-actions",
+      "postgres",
+      "structured-logging"
+    ]
+  },
+  "output": "{{projectName}}"
+}

@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "id": "python-django-modular-apps",
+  "version": "1.0.0",
+  "name": "Django Modular Apps",
+  "description": "Django modular apps with strong boundaries and public API exports.",
+  "projectType": "backend-service",
+  "language": "python",
+  "framework": "django",
+  "organization": "modular-apps",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "operational",
+  "supportedCapabilities": [
+    "unit-tests",
+    "integration-tests",
+    "docker",
+    "docker-compose",
+    "github-actions",
+    "postgres",
+    "redis",
+    "structured-logging",
+    "opentelemetry",
+    "documentation-showcase"
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    },
+    {
+      "name": "pythonPackageName",
+      "prompt": "Python package name",
+      "type": "string",
+      "default": "{{projectName}}",
+      "transform": "snake"
+    }
+  ],
+  "entries": [
+    {
+      "type": "directory",
+      "path": "src/apps"
+    },
+    {
+      "type": "file",
+      "path": "pyproject.toml",
+      "source": "template/pyproject.toml"
+    },
+    {
+      "type": "file",
+      "path": "manage.py",
+      "source": "template/manage.py"
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "src/config/__init__.py",
+      "source": "template/src/config/__init__.py"
+    },
+    {
+      "type": "file",
+      "path": "src/config/urls.py",
+      "source": "template/src/config/urls.py"
+    },
+    {
+      "type": "file",
+      "path": "src/config/settings/__init__.py",
+      "source": "template/src/config/settings/__init__.py"
+    },
+    {
+      "type": "file",
+      "path": "src/config/settings/base.py",
+      "source": "template/src/config/settings/base.py"
+    }
+  ]
+}

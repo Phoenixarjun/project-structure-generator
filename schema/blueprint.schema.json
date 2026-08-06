@@ -33,6 +33,53 @@
       "type": "string",
       "minLength": 1
     },
+    "projectType": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string"
+    },
+    "framework": {
+      "type": "string"
+    },
+    "organization": {
+      "type": "string"
+    },
+    "supportedMaturities": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "defaultMaturity": {
+      "type": "string"
+    },
+    "supportedCapabilities": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "incompatibleCapabilities": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "extensionPoints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "description", "targetFile", "marker"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+          "targetFile": { "type": "string" },
+          "marker": { "type": "string" }
+        }
+      }
+    },
+    "maturityDefaults": {
+      "type": "object"
+    },
+    "featureTemplate": {
+      "type": "object"
+    },
     "tags": {
       "type": "array",
       "items": {

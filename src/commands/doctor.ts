@@ -9,10 +9,15 @@ export async function runDoctor(json: boolean): Promise<void> {
   const nodeMajor = Number.parseInt(process.versions.node.split(".")[0] ?? "0", 10);
   const checks: Array<{ name: string; ok: boolean; detail: string }> = [];
 
+  const nodeSupported = nodeMajor >= 18;
+  const nodeMsg = nodeMajor >= MINIMUM_NODE_MAJOR
+    ? `${process.versions.node} (LTS target ${MINIMUM_NODE_MAJOR})`
+    : `${process.versions.node} (supported >=18, Node ${MINIMUM_NODE_MAJOR} LTS recommended)`;
+
   checks.push({
     name: "Node.js",
-    ok: nodeMajor >= MINIMUM_NODE_MAJOR,
-    detail: `${process.versions.node} ${nodeMajor >= MINIMUM_NODE_MAJOR ? "supported" : `requires >=${MINIMUM_NODE_MAJOR}`}`
+    ok: nodeSupported,
+    detail: nodeMsg
   });
 
   try {

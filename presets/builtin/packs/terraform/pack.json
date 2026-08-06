@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "terraform",
+  "name": "Terraform Infrastructure",
+  "category": "infrastructure",
+  "description": "Terraform infrastructure starter modules under infra/terraform.",
+  "compatibleWith": {
+    "projectTypes": ["backend-service", "frontend-application", "fullstack-application", "cli", "library", "worker"],
+    "languages": ["python", "java", "go", "typescript"]
+  },
+  "files": [
+    {
+      "type": "file",
+      "path": "infra/terraform/versions.tf",
+      "source": "template/versions.tf"
+    },
+    {
+      "type": "file",
+      "path": "infra/terraform/main.tf",
+      "source": "template/main.tf"
+    },
+    {
+      "type": "file",
+      "path": "infra/terraform/variables.tf",
+      "source": "template/variables.tf"
+    },
+    {
+      "type": "file",
+      "path": "infra/terraform/outputs.tf",
+      "source": "template/outputs.tf"
+    },
+    {
+      "type": "file",
+      "path": "infra/terraform/README.md",
+      "source": "template/README.md"
+    }
+  ]
+}

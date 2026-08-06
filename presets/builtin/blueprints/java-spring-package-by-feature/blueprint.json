@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "id": "java-spring-package-by-feature",
+  "version": "1.0.0",
+  "name": "Java Spring Boot Package-by-Feature",
+  "description": "Java Spring Boot service organized by features owning technical layers.",
+  "projectType": "backend-service",
+  "language": "java",
+  "framework": "spring-boot",
+  "organization": "package-by-feature",
+  "supportedMaturities": ["prototype", "standard", "operational"],
+  "defaultMaturity": "standard",
+  "supportedCapabilities": [
+    "unit-tests",
+    "integration-tests",
+    "docker",
+    "docker-compose",
+    "github-actions",
+    "postgres",
+    "redis",
+    "kafka",
+    "structured-logging",
+    "opentelemetry",
+    "documentation-showcase"
+  ],
+  "variables": [
+    {
+      "name": "projectName",
+      "prompt": "Project name",
+      "type": "string",
+      "required": true,
+      "transform": "kebab"
+    },
+    {
+      "name": "groupId",
+      "prompt": "Maven group ID",
+      "type": "string",
+      "default": "com.example"
+    },
+    {
+      "name": "artifactId",
+      "prompt": "Maven artifact ID",
+      "type": "string",
+      "default": "{{projectName}}",
+      "transform": "kebab"
+    },
+    {
+      "name": "javaPackage",
+      "prompt": "Java base package name",
+      "type": "string",
+      "default": "{{groupId}}.{{projectNameCamel}}"
+    }
+  ],
+  "featureTemplate": {
+    "entries": [
+      {
+        "type": "directory",
+        "path": "src/main/java/{{javaPackagePath}}/{{featureNameCamel}}/dto"
+      },
+      {
+        "type": "file",
+        "path": "src/main/java/{{javaPackagePath}}/{{featureNameCamel}}/{{featureNamePascal}}Controller.java",
+        "content": "package {{javaPackage}}.{{featureNameCamel}};\n\nimport org.springframework.web.bind.annotation.GetMapping;\nimport org.springframework.web.bind.annotation.RequestMapping;\nimport org.springframework.web.bind.annotation.RestController;\nimport java.util.Map;\n\n@RestController\n@RequestMapping(\"/{{featureNameKebab}}\")\npublic class {{featureNamePascal}}Controller {\n    @GetMapping\n    public Map<String, String> getInfo() {\n        return Map.of(\"feature\", \"{{featureNameCamel}}\");\n    }\n}\n"
+      }
+    ]
+  },
+  "entries": [
+    {
+      "type": "directory",
+      "path": "src/main/java/{{javaPackagePath}}/shared/config"
+    },
+    {
+      "type": "directory",
+      "path": "src/main/java/{{javaPackagePath}}/shared/error"
+    },
+    {
+      "type": "directory",
+      "path": "src/main/java/{{javaPackagePath}}/shared/infrastructure"
+    },
+    {
+      "type": "file",
+      "path": "build.gradle.kts",
+      "source": "template/build.gradle.kts"
+    },
+    {
+      "type": "file",
+      "path": "settings.gradle.kts",
+      "source": "template/settings.gradle.kts"
+    },
+    {
+      "type": "file",
+      "path": "gradlew",
+      "source": "template/gradlew",
+      "executable": true
+    },
+    {
+      "type": "file",
+      "path": "gradlew.bat",
+      "source": "template/gradlew.bat"
+    },
+    {
+      "type": "file",
+      "path": "gradle/wrapper/gradle-wrapper.properties",
+      "source": "template/gradle/wrapper/gradle-wrapper.properties"
+    },
+    {
+      "type": "file",
+      "path": "gradle/wrapper/gradle-wrapper.jar",
+      "source": "template/gradle/wrapper/gradle-wrapper.jar",
+      "binary": true
+    },
+    {
+      "type": "file",
+      "path": "README.md",
+      "source": "template/README.md"
+    },
+    {
+      "type": "file",
+      "path": ".gitignore",
+      "source": "template/gitignore"
+    },
+    {
+      "type": "file",
+      "path": "src/main/resources/application.yml",
+      "source": "template/src/main/resources/application.yml"
+    },
+    {
+      "type": "file",
+      "path": "src/main/java/{{javaPackagePath}}/Application.java",
+      "source": "template/src/main/java/Application.java"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "documentation-showcase",
+  "name": "Documentation Showcase",
+  "category": "documentation",
+  "description": "Adds architecture and contributor documentation.",
+  "files": [
+    {
+      "type": "file",
+      "path": "docs/ARCHITECTURE.md",
+      "source": "template/ARCHITECTURE.md"
+    }
+  ]
+}
