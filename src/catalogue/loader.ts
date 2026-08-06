@@ -79,6 +79,18 @@ async function loadPackFromDir(
   }
 
   const parsed = await readJsonFile<PackManifest>(manifestPath);
+  const rawObj = parsed as unknown as Record<string, unknown>;
+  const forbiddenHookKeys = ["scripts", "hooks", "postInstall", "preInstall", "command", "exec", "shell"];
+  for (const key of forbiddenHookKeys) {
+    if (rawObj && rawObj[key] !== undefined) {
+      issues.push({
+        path: manifestPath,
+        message: `Forbidden shell hook property found in pack manifest: ${key}`
+      });
+      return null;
+    }
+  }
+
   if (!parsed || parsed.schemaVersion !== 1 || !parsed.id || !parsed.name) {
     issues.push({
       path: manifestPath,

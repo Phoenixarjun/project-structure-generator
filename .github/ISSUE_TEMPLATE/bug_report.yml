@@ -1,0 +1,47 @@
+name: Bug Report
+description: Create a bug report to help improve Project Structure Generator
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe what happened when running structgen.
+    validations:
+      required: true
+  - type: input
+    id: cli-version
+    attributes:
+      label: CLI Version
+      description: Run structgen --version
+      placeholder: e.g. 0.2.0
+    validations:
+      required: true
+  - type: input
+    id: node-version
+    attributes:
+      label: Node Version
+      description: Run node --version
+      placeholder: e.g. v24.18.1
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating System
+      placeholder: e.g. Windows 11, macOS Sequoia, Ubuntu 24.04
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command Executed
+      description: The exact command line string executed.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Sanitized Output / Diagnostics
+      description: Output from structgen doctor or error message. Do NOT include secrets or private keys.

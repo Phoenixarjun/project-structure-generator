@@ -61,6 +61,13 @@ export function assertSafeRelativePath(value: string, label: string): string {
     throw new StructgenError("UNSAFE_PATH", `${label} cannot resolve to the root directory`);
   }
 
+  const reservedPattern = /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(\..*)?$/i;
+  for (const segment of segments) {
+    if (reservedPattern.test(segment) || segment.endsWith(".") || segment.endsWith(" ")) {
+      throw new StructgenError("UNSAFE_PATH", `${label} contains invalid or reserved filename: ${segment}`);
+    }
+  }
+
   return normalized;
 }
 

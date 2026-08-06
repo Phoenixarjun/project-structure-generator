@@ -1,32 +1,41 @@
-# Contributing
+# Contributing to Project Structure Generator
 
-## Setup
+Thank you for your interest in contributing!
 
-```bash
-nvm use
-npm install
-npm run typecheck
-npm test
-```
+## Development Setup
 
-## Change rules
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/PhoenixArjun/project-structure-generator.git
+   cd project-structure-generator
+   ```
 
-- preserve zero runtime dependencies unless a dependency removes substantial, proven complexity
-- keep blueprint content language-specific and engine logic language-neutral
-- reject unsafe filesystem behavior by default
-- add tests for every engine or vault behavior change
-- do not add arbitrary command hooks
-- update the JSON Schema and blueprint documentation together
-- keep CLI output deterministic in non-interactive mode
+2. Install dependencies:
+   ```bash
+   npm ci
+   ```
 
-## Adding a built-in blueprint
+3. Type-check and run tests:
+   ```bash
+   npm run typecheck
+   npm test
+   ```
 
-1. Create `presets/builtin/<id>/blueprint.json`.
-2. Put source files inside the same blueprint directory.
-3. Run `structgen validate` against the directory.
-4. Add an integration test if the preset exercises new engine behavior.
-5. Document it in the README.
+4. Validate the template catalogue:
+   ```bash
+   node dist/src/cli.js catalogue validate
+   ```
 
-## Pull request expectations
+## Architectural Invariants
 
-A pull request should explain the user problem, the chosen boundary, compatibility impact, security impact, and tests performed.
+- **No AI / DB / Web UI / Shell Hooks**: Keep runtime dependencies at zero.
+- **Declarative Blueprints**: Blueprints and capability packs define structure and files declaratively without arbitrary shell script execution.
+- **Safety First**: Preserve path traversal prevention, symlink safety, overwrite protection, and secret redaction.
+- **No Comments in Code**: Follow code quality standards without unnecessary inline comment noise.
+
+## Submitting Pull Requests
+
+- Create a feature branch off `dev`.
+- Ensure all tests pass (`npm test`).
+- Ensure package contents check passes (`npm run package:check`).
+- Submit a PR targeting `dev`.
