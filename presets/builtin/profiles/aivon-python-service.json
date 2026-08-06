@@ -17,8 +17,5 @@
       "opentelemetry"
     ]
   },
-  "variables": {
-    "sourceLayout": "src"
-  },
   "output": "{{projectName}}"
 }
