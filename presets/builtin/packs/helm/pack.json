@@ -9,13 +9,11 @@
     "projectTypes": ["backend-service", "frontend-application", "fullstack-application", "worker"],
     "languages": ["python", "java", "go", "typescript"]
   },
-  "directories": [
+  "entries": [
     {
       "type": "directory",
       "path": "deploy/helm/{{projectName}}/templates"
-    }
-  ],
-  "files": [
+    },
     {
       "type": "file",
       "path": "deploy/helm/{{projectName}}/Chart.yaml",

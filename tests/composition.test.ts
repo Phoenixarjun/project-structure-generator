@@ -23,7 +23,7 @@ void test("composition engine inserts extension point contributions into target 
   });
 
   const mainFile = plan.entries.find(
-    (e) => e.type === "file" && e.relativePath === "src/my_api/main.py"
+    (e) => e.type === "file" && e.relativePath === "src/my_api/bootstrap/application.py"
   ) as PlannedFile;
 
   assert.ok(mainFile);

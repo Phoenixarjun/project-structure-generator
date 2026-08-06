@@ -3,11 +3,11 @@
   "id": "python-django-apps",
   "version": "1.0.0",
   "name": "Django Apps",
-  "description": "Framework-native Django application structure with apps as feature boundaries.",
+  "description": "Django project structure organized by app directories.",
   "projectType": "backend-service",
   "language": "python",
   "framework": "django",
-  "organization": "django-apps",
+  "organization": "apps",
   "supportedMaturities": ["prototype", "standard", "operational"],
   "defaultMaturity": "standard",
   "supportedCapabilities": [
@@ -38,6 +38,45 @@
       "transform": "snake"
     }
   ],
+  "featureTemplate": {
+    "variables": ["featureName"],
+    "entries": [
+      {
+        "type": "directory",
+        "path": "src/apps/{{featureNameSnake}}"
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/__init__.py",
+        "content": ""
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/apps.py",
+        "content": "from django.apps import AppConfig\n\nclass {{featureNamePascal}}Config(AppConfig):\n    name = 'src.apps.{{featureNameSnake}}'\n"
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/models.py",
+        "content": "from django.db import models\n"
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/views.py",
+        "content": "from django.http import JsonResponse\n\ndef index(request):\n    return JsonResponse({'app': '{{featureNameSnake}}'})\n"
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/urls.py",
+        "content": "from django.urls import path\nfrom . import views\n\nurlpatterns = [\n    path('', views.index, name='index'),\n]\n"
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/tests.py",
+        "content": "from django.test import TestCase\n\nclass {{featureNamePascal}}TestCase(TestCase):\n    def test_sample(self):\n        self.assertTrue(True)\n"
+      }
+    ]
+  },
   "entries": [
     {
       "type": "directory",
@@ -82,16 +121,6 @@
       "type": "file",
       "path": "src/config/settings/base.py",
       "source": "template/src/config/settings/base.py"
-    },
-    {
-      "type": "file",
-      "path": "src/config/settings/development.py",
-      "source": "template/src/config/settings/development.py"
-    },
-    {
-      "type": "file",
-      "path": "src/config/settings/test.py",
-      "source": "template/src/config/settings/test.py"
     }
   ]
 }

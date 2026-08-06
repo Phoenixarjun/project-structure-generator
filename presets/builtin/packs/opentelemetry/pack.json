@@ -4,6 +4,13 @@
   "name": "OpenTelemetry Tracing",
   "category": "observability",
   "description": "Adds OpenTelemetry tracing middleware and instrumentation.",
+  "entries": [
+    {
+      "type": "file",
+      "path": "config/otel.json",
+      "source": "template/otel.json"
+    }
+  ],
   "contributions": [
     {
       "extensionPointId": "application-imports",

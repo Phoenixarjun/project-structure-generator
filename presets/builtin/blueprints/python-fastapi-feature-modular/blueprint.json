@@ -31,13 +31,13 @@
     {
       "id": "application-imports",
       "description": "Imports block for FastAPI main module",
-      "targetFile": "src/{{packageNameSnake}}/main.py",
+      "targetFile": "src/{{packageNameSnake}}/bootstrap/application.py",
       "marker": "# {{EXTENSION_POINT:application-imports}}"
     },
     {
       "id": "application-bootstrap",
       "description": "Middleware and setup block for FastAPI app",
-      "targetFile": "src/{{packageNameSnake}}/main.py",
+      "targetFile": "src/{{packageNameSnake}}/bootstrap/application.py",
       "marker": "# {{EXTENSION_POINT:application-bootstrap}}"
     }
   ],
@@ -63,6 +63,10 @@
       {
         "type": "directory",
         "path": "src/{{packageNameSnake}}/features/{{featureNameSnake}}"
+      },
+      {
+        "type": "directory",
+        "path": "src/{{packageNameSnake}}/features/{{featureNameSnake}}/tests"
       }
     ],
     "files": [
@@ -74,7 +78,37 @@
       {
         "type": "file",
         "path": "src/{{packageNameSnake}}/features/{{featureNameSnake}}/router.py",
-        "content": "from fastapi import APIRouter\n\nrouter = APIRouter(prefix=\"/{{featureNameKebab}}\", tags=[\"{{featureNameKebab}}\"])\n\n@router.get(\"\")\ndef get_{{featureNameSnake}}():\n    return {\"feature\": \"{{featureNameKebab}}\"}\n"
+        "content": "from fastapi import APIRouter\nfrom {{packageNameSnake}}.features.{{featureNameSnake}}.service import {{featureNamePascal}}Service\n\nrouter = APIRouter(prefix=\"/{{featureNameKebab}}\", tags=[\"{{featureNameKebab}}\"])\nservice = {{featureNamePascal}}Service()\n\n@router.get(\"\")\ndef get_{{featureNameSnake}}():\n    return service.get_{{featureNameSnake}}_info()\n"
+      },
+      {
+        "type": "file",
+        "path": "src/{{packageNameSnake}}/features/{{featureNameSnake}}/schemas.py",
+        "content": "from pydantic import BaseModel\n\nclass {{featureNamePascal}}Response(BaseModel):\n    name: str\n    status: str\n"
+      },
+      {
+        "type": "file",
+        "path": "src/{{packageNameSnake}}/features/{{featureNameSnake}}/service.py",
+        "content": "from {{packageNameSnake}}.features.{{featureNameSnake}}.repository import {{featureNamePascal}}Repository\n\nclass {{featureNamePascal}}Service:\n    def __init__(self):\n        self.repo = {{featureNamePascal}}Repository()\n\n    def get_{{featureNameSnake}}_info(self):\n        return self.repo.find()\n"
+      },
+      {
+        "type": "file",
+        "path": "src/{{packageNameSnake}}/features/{{featureNameSnake}}/repository.py",
+        "content": "from {{packageNameSnake}}.features.{{featureNameSnake}}.models import {{featureNamePascal}}Model\n\nclass {{featureNamePascal}}Repository:\n    def find(self):\n        model = {{featureNamePascal}}Model(name=\"{{featureNameKebab}}\", status=\"active\")\n        return {\"name\": model.name, \"status\": model.status}\n"
+      },
+      {
+        "type": "file",
+        "path": "src/{{packageNameSnake}}/features/{{featureNameSnake}}/models.py",
+        "content": "class {{featureNamePascal}}Model:\n    def __init__(self, name: str, status: str):\n        self.name = name\n        self.status = status\n"
+      },
+      {
+        "type": "file",
+        "path": "src/{{packageNameSnake}}/features/{{featureNameSnake}}/tests/__init__.py",
+        "content": ""
+      },
+      {
+        "type": "file",
+        "path": "src/{{packageNameSnake}}/features/{{featureNameSnake}}/tests/test_router.py",
+        "content": "from {{packageNameSnake}}.features.{{featureNameSnake}}.service import {{featureNamePascal}}Service\n\ndef test_{{featureNameSnake}}_service():\n    s = {{featureNamePascal}}Service()\n    res = s.get_{{featureNameSnake}}_info()\n    assert res[\"name\"] == \"{{featureNameKebab}}\"\n"
       }
     ]
   },
@@ -82,6 +116,34 @@
     {
       "type": "directory",
       "path": "src/{{packageNameSnake}}"
+    },
+    {
+      "type": "directory",
+      "path": "src/{{packageNameSnake}}/bootstrap"
+    },
+    {
+      "type": "directory",
+      "path": "src/{{packageNameSnake}}/shared"
+    },
+    {
+      "type": "directory",
+      "path": "src/{{packageNameSnake}}/shared/config"
+    },
+    {
+      "type": "directory",
+      "path": "src/{{packageNameSnake}}/shared/errors"
+    },
+    {
+      "type": "directory",
+      "path": "src/{{packageNameSnake}}/shared/logging"
+    },
+    {
+      "type": "directory",
+      "path": "src/{{packageNameSnake}}/shared/infrastructure"
+    },
+    {
+      "type": "directory",
+      "path": "src/{{packageNameSnake}}/features"
     },
     {
       "type": "file",
@@ -100,6 +162,11 @@
     },
     {
       "type": "file",
+      "path": ".env.example",
+      "source": "template/env.example"
+    },
+    {
+      "type": "file",
       "path": "src/{{packageNameSnake}}/__init__.py",
       "content": ""
     },
@@ -107,6 +174,66 @@
       "type": "file",
       "path": "src/{{packageNameSnake}}/main.py",
       "source": "template/src/main.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{packageNameSnake}}/bootstrap/__init__.py",
+      "content": ""
+    },
+    {
+      "type": "file",
+      "path": "src/{{packageNameSnake}}/bootstrap/application.py",
+      "source": "template/src/bootstrap/application.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{packageNameSnake}}/bootstrap/routes.py",
+      "source": "template/src/bootstrap/routes.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{packageNameSnake}}/shared/__init__.py",
+      "content": ""
+    },
+    {
+      "type": "file",
+      "path": "src/{{packageNameSnake}}/shared/config/__init__.py",
+      "content": ""
+    },
+    {
+      "type": "file",
+      "path": "src/{{packageNameSnake}}/shared/config/settings.py",
+      "source": "template/src/shared/config/settings.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{packageNameSnake}}/shared/errors/__init__.py",
+      "content": ""
+    },
+    {
+      "type": "file",
+      "path": "src/{{packageNameSnake}}/shared/errors/handlers.py",
+      "source": "template/src/shared/errors/handlers.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{packageNameSnake}}/shared/logging/__init__.py",
+      "content": ""
+    },
+    {
+      "type": "file",
+      "path": "src/{{packageNameSnake}}/shared/logging/configuration.py",
+      "source": "template/src/shared/logging/configuration.py"
+    },
+    {
+      "type": "file",
+      "path": "src/{{packageNameSnake}}/shared/infrastructure/__init__.py",
+      "content": ""
+    },
+    {
+      "type": "file",
+      "path": "src/{{packageNameSnake}}/features/__init__.py",
+      "content": ""
     }
   ]
 }

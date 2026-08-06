@@ -38,6 +38,45 @@
       "transform": "snake"
     }
   ],
+  "featureTemplate": {
+    "variables": ["featureName"],
+    "entries": [
+      {
+        "type": "directory",
+        "path": "src/apps/{{featureNameSnake}}"
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/__init__.py",
+        "content": ""
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/models.py",
+        "content": "from django.db import models\n"
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/services.py",
+        "content": "class {{featureNamePascal}}Service:\n    pass\n"
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/selectors.py",
+        "content": "def get_{{featureNameSnake}}_by_id(item_id: int):\n    return None\n"
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/api.py",
+        "content": "def {{featureNameSnake}}_endpoint(request):\n    return {}\n"
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/tests.py",
+        "content": "from django.test import TestCase\n\nclass {{featureNamePascal}}DomainTestCase(TestCase):\n    pass\n"
+      }
+    ]
+  },
   "entries": [
     {
       "type": "directory",

@@ -119,28 +119,20 @@ export async function composeGenerationPlan(options: {
     const pack = packRecord.pack;
     const sourceLabel = `pack:${pack.id}`;
 
-    if (pack.directories) {
-      for (const dirEntry of pack.directories) {
-        const rendered = await renderEntry(
-          dirEntry,
-          packRecord.directory,
-          variables,
-          sourceLabel
-        );
-        if (rendered) rawEntries.push(rendered);
-      }
-    }
+    const allPackEntries: BlueprintEntry[] = [
+      ...(pack.entries ?? []),
+      ...(pack.directories ?? []),
+      ...(pack.files ?? [])
+    ];
 
-    if (pack.files) {
-      for (const fileEntry of pack.files) {
-        const rendered = await renderEntry(
-          fileEntry,
-          packRecord.directory,
-          variables,
-          sourceLabel
-        );
-        if (rendered) rawEntries.push(rendered);
-      }
+    for (const packEntry of allPackEntries) {
+      const rendered = await renderEntry(
+        packEntry,
+        packRecord.directory,
+        variables,
+        sourceLabel
+      );
+      if (rendered) rawEntries.push(rendered);
     }
 
     if (pack.contributions) {
@@ -169,28 +161,20 @@ export async function composeGenerationPlan(options: {
         ...featVars
       };
 
-      if (ft.directories) {
-        for (const dirEntry of ft.directories) {
-          const rendered = await renderEntry(
-            dirEntry,
-            blueprintRecord.directory,
-            combinedVars,
-            `feature:${featVars.featureNameKebab}`
-          );
-          if (rendered) rawEntries.push(rendered);
-        }
-      }
+      const allFtEntries: BlueprintEntry[] = [
+        ...(ft.entries ?? []),
+        ...(ft.directories ?? []),
+        ...(ft.files ?? [])
+      ];
 
-      if (ft.files) {
-        for (const fileEntry of ft.files) {
-          const rendered = await renderEntry(
-            fileEntry,
-            blueprintRecord.directory,
-            combinedVars,
-            `feature:${featVars.featureNameKebab}`
-          );
-          if (rendered) rawEntries.push(rendered);
-        }
+      for (const ftEntry of allFtEntries) {
+        const rendered = await renderEntry(
+          ftEntry,
+          blueprintRecord.directory,
+          combinedVars,
+          `feature:${featVars.featureNameKebab}`
+        );
+        if (rendered) rawEntries.push(rendered);
       }
     }
   }

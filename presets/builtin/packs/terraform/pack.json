@@ -8,7 +8,7 @@
     "projectTypes": ["backend-service", "frontend-application", "fullstack-application", "cli", "library", "worker"],
     "languages": ["python", "java", "go", "typescript"]
   },
-  "files": [
+  "entries": [
     {
       "type": "file",
       "path": "infra/terraform/versions.tf",

@@ -3,7 +3,7 @@
   "id": "python-django-modular-apps",
   "version": "1.0.0",
   "name": "Django Modular Apps",
-  "description": "Django modular apps with strong boundaries and public API exports.",
+  "description": "Django modular app architecture with strict layered encapsulation.",
   "projectType": "backend-service",
   "language": "python",
   "framework": "django",
@@ -38,6 +38,70 @@
       "transform": "snake"
     }
   ],
+  "featureTemplate": {
+    "variables": ["featureName"],
+    "entries": [
+      {
+        "type": "directory",
+        "path": "src/apps/{{featureNameSnake}}"
+      },
+      {
+        "type": "directory",
+        "path": "src/apps/{{featureNameSnake}}/api"
+      },
+      {
+        "type": "directory",
+        "path": "src/apps/{{featureNameSnake}}/application"
+      },
+      {
+        "type": "directory",
+        "path": "src/apps/{{featureNameSnake}}/domain"
+      },
+      {
+        "type": "directory",
+        "path": "src/apps/{{featureNameSnake}}/infrastructure"
+      },
+      {
+        "type": "directory",
+        "path": "src/apps/{{featureNameSnake}}/tests"
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/__init__.py",
+        "content": ""
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/public.py",
+        "content": "\"\"\"Public API export for {{featureNameSnake}} module.\"\"\"\n"
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/api/__init__.py",
+        "content": ""
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/application/__init__.py",
+        "content": ""
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/domain/__init__.py",
+        "content": ""
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/infrastructure/__init__.py",
+        "content": ""
+      },
+      {
+        "type": "file",
+        "path": "src/apps/{{featureNameSnake}}/tests/__init__.py",
+        "content": ""
+      }
+    ]
+  },
   "entries": [
     {
       "type": "directory",

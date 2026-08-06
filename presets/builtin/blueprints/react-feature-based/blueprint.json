@@ -29,7 +29,12 @@
     }
   ],
   "featureTemplate": {
-    "entries": [
+    "variables": ["featureName"],
+    "directories": [
+      {
+        "type": "directory",
+        "path": "src/features/{{featureNameKebab}}"
+      },
       {
         "type": "directory",
         "path": "src/features/{{featureNameKebab}}/api"
@@ -41,20 +46,36 @@
       {
         "type": "directory",
         "path": "src/features/{{featureNameKebab}}/types"
-      },
+      }
+    ],
+    "files": [
       {
         "type": "file",
         "path": "src/features/{{featureNameKebab}}/index.ts",
-        "content": "// Public Feature API for {{featureNameKebab}}\nexport * from './components/FeatureWidget';\n"
+        "content": "export * from './components/{{featureNamePascal}}View';\nexport * from './types';\n"
       },
       {
         "type": "file",
-        "path": "src/features/{{featureNameKebab}}/components/FeatureWidget.tsx",
-        "content": "export function FeatureWidget() {\n  return <div>Feature: {{featureNameKebab}}</div>;\n}\n"
+        "path": "src/features/{{featureNameKebab}}/api/client.ts",
+        "content": "import { environment } from '../../../config/environment';\n\nexport async function fetch{{featureNamePascal}}Data() {\n  const res = await fetch(`${environment.apiBaseUrl}/{{featureNameKebab}}`);\n  return res.json();\n}\n"
+      },
+      {
+        "type": "file",
+        "path": "src/features/{{featureNameKebab}}/components/{{featureNamePascal}}View.tsx",
+        "content": "import React from 'react';\n\nexport function {{featureNamePascal}}View() {\n  return <div className=\"{{featureNameKebab}}-view\">Feature: {{featureNameKebab}}</div>;\n}\n"
+      },
+      {
+        "type": "file",
+        "path": "src/features/{{featureNameKebab}}/types/index.ts",
+        "content": "export interface {{featureNamePascal}}Item {\n  id: string;\n  name: string;\n}\n"
       }
     ]
   },
   "entries": [
+    {
+      "type": "directory",
+      "path": "src/app"
+    },
     {
       "type": "directory",
       "path": "src/components/ui"
@@ -62,6 +83,14 @@
     {
       "type": "directory",
       "path": "src/components/shared"
+    },
+    {
+      "type": "directory",
+      "path": "src/features"
+    },
+    {
+      "type": "directory",
+      "path": "src/hooks"
     },
     {
       "type": "directory",
@@ -74,6 +103,10 @@
     {
       "type": "directory",
       "path": "src/config"
+    },
+    {
+      "type": "directory",
+      "path": "src/types"
     },
     {
       "type": "file",
@@ -107,13 +140,43 @@
     },
     {
       "type": "file",
+      "path": ".env.example",
+      "source": "template/env.example"
+    },
+    {
+      "type": "file",
       "path": "src/main.tsx",
       "source": "template/src/main.tsx"
     },
     {
       "type": "file",
+      "path": "src/vite-env.d.ts",
+      "source": "template/src/vite-env.d.ts"
+    },
+    {
+      "type": "file",
       "path": "src/app/App.tsx",
       "source": "template/src/app/App.tsx"
+    },
+    {
+      "type": "file",
+      "path": "src/app/providers.tsx",
+      "source": "template/src/app/providers.tsx"
+    },
+    {
+      "type": "file",
+      "path": "src/app/routes.tsx",
+      "source": "template/src/app/routes.tsx"
+    },
+    {
+      "type": "file",
+      "path": "src/config/environment.ts",
+      "source": "template/src/config/environment.ts"
+    },
+    {
+      "type": "file",
+      "path": "src/features/README.md",
+      "content": "# Features Directory\n\nOrganize business domain modules here.\n"
     }
   ]
 }

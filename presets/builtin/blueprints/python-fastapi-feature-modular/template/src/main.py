@@ -1,9 +1,9 @@
-from fastapi import FastAPI
-# {{EXTENSION_POINT:application-imports}}
+import uvicorn
+from {{packageNameSnake}}.bootstrap.application import create_app
+from {{packageNameSnake}}.shared.logging.configuration import configure_logging
 
-app = FastAPI(title="{{projectName}}")
-# {{EXTENSION_POINT:application-bootstrap}}
+configure_logging()
+app = create_app()
 
-@app.get("/health")
-def health_check():
-    return {"status": "ok", "app": "{{projectName}}"}
+if __name__ == "__main__":
+    uvicorn.run("{{packageNameSnake}}.main:app", host="0.0.0.0", port=8000, reload=True)

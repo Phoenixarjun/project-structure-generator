@@ -7,5 +7,12 @@
   "compatibleWith": {
     "projectTypes": ["backend-service", "worker"],
     "languages": ["python", "java", "go", "typescript"]
-  }
+  },
+  "entries": [
+    {
+      "type": "file",
+      "path": "config/redis.json",
+      "source": "template/redis.config.json"
+    }
+  ]
 }

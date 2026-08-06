@@ -1,0 +1,10 @@
+{
+  "database": {
+    "driver": "postgresql",
+    "host": "${POSTGRES_HOST:localhost}",
+    "port": 5432,
+    "user": "${POSTGRES_USER:postgres}",
+    "password": "${POSTGRES_PASSWORD:postgres}",
+    "name": "${POSTGRES_DB:app_db}"
+  }
+}

@@ -8,7 +8,7 @@
     "projectTypes": ["backend-service", "frontend-application", "worker"],
     "languages": ["python", "java", "go", "typescript"]
   },
-  "files": [
+  "entries": [
     {
       "type": "file",
       "path": "compose.yaml",

@@ -4,10 +4,10 @@
   "name": "Structured Logging",
   "category": "observability",
   "description": "Adds structured JSON logging configuration.",
-  "files": [
+  "entries": [
     {
       "type": "file",
-      "path": "logging.json",
+      "path": "config/logging.json",
       "source": "template/logging.json"
     }
   ]

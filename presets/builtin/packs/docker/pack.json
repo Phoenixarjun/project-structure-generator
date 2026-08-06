@@ -4,11 +4,16 @@
   "name": "Docker",
   "category": "infrastructure",
   "description": "Adds Docker containerization files.",
-  "files": [
+  "entries": [
     {
       "type": "file",
       "path": "Dockerfile",
       "source": "template/Dockerfile"
+    },
+    {
+      "type": "file",
+      "path": ".dockerignore",
+      "source": "template/dockerignore"
     }
   ]
 }

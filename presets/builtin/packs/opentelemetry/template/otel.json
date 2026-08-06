@@ -1,0 +1,7 @@
+{
+  "opentelemetry": {
+    "serviceName": "${OTEL_SERVICE_NAME:{{projectName}}}",
+    "exporterEndpoint": "${OTEL_EXPORTER_OTLP_ENDPOINT:http://localhost:4317}",
+    "samplingRatio": 1.0
+  }
+}

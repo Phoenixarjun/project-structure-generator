@@ -4,7 +4,7 @@
   "name": "GitHub Actions CI",
   "category": "delivery",
   "description": "Adds continuous integration workflow.",
-  "files": [
+  "entries": [
     {
       "type": "file",
       "path": ".github/workflows/ci.yml",

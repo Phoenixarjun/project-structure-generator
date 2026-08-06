@@ -4,7 +4,7 @@
   "name": "Documentation Showcase",
   "category": "documentation",
   "description": "Adds architecture and contributor documentation.",
-  "files": [
+  "entries": [
     {
       "type": "file",
       "path": "docs/ARCHITECTURE.md",

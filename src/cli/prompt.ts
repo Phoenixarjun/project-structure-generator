@@ -100,36 +100,46 @@ export class TerminalPrompter implements VariablePrompter {
   ): Promise<T[]> {
     if (options.length === 0) return [];
     this.assertInteractive();
-    stdout.write(`${prompt} (comma-separated numbers, or 'none'/'all')\n`);
+    stdout.write(`${prompt} (comma-separated numbers to toggle, 'none' to clear, 'all' to select all, or Enter to accept defaults)\n`);
 
-    const defaultSet = new Set(defaults);
+    const currentSelected = new Set<T>(defaults);
     options.forEach((opt, idx) => {
-      const isDef = defaultSet.has(opt.value) ? " [X]" : " [ ]";
+      const isDef = currentSelected.has(opt.value) ? " [X]" : " [ ]";
       const hint = opt.hint ? ` - ${opt.hint}` : "";
       stdout.write(`  ${idx + 1}.${isDef} ${opt.label}${hint}\n`);
     });
 
-    const answer = await this.input("Select options (Enter to accept defaults)");
-    if (answer === "") {
-      return defaults;
-    }
-    if (answer.toLowerCase() === "none") {
-      return [];
-    }
-    if (answer.toLowerCase() === "all") {
-      return options.map((o) => o.value);
+    const answer = await this.input("Select options");
+    const normalized = answer.trim().toLowerCase();
+
+    let resultSet: T[];
+    if (normalized === "") {
+      resultSet = defaults;
+    } else if (normalized === "none") {
+      resultSet = [];
+    } else if (normalized === "all") {
+      resultSet = options.map((o) => o.value);
+    } else {
+      const parts = normalized.split(",").map((s) => s.trim());
+      for (const part of parts) {
+        const idx = Number.parseInt(part, 10) - 1;
+        const opt = options[idx];
+        if (opt !== undefined) {
+          if (currentSelected.has(opt.value)) {
+            currentSelected.delete(opt.value);
+          } else {
+            currentSelected.add(opt.value);
+          }
+        }
+      }
+      resultSet = Array.from(currentSelected);
     }
 
-    const selected: T[] = [];
-    const parts = answer.split(",").map((s) => s.trim());
-    for (const part of parts) {
-      const idx = Number.parseInt(part, 10) - 1;
-      const opt = options[idx];
-      if (opt !== undefined) {
-        selected.push(opt.value);
-      }
-    }
-    return selected;
+    const selectedLabels = options
+      .filter((o) => resultSet.includes(o.value))
+      .map((o) => o.label);
+    stdout.write(`Selected: ${selectedLabels.length > 0 ? selectedLabels.join(", ") : "none"}\n`);
+    return resultSet;
   }
 
   private assertInteractive(): void {

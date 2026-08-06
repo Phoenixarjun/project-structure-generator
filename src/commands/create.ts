@@ -176,6 +176,17 @@ export async function runCreate(options: CreateOptions): Promise<void> {
     throw new StructgenError("BLUEPRINT_NOT_FOUND", "Blueprint resolution failed.");
   }
 
+  if (interactive && bpRec.blueprint.featureTemplate && (!features || features.length === 0)) {
+    const featInput = await prompter!.input("Add initial features or modules? (comma-separated, e.g. authentication, users) [health]");
+    if (featInput.trim()) {
+      features = featInput.split(",").map((s) => s.trim()).filter((s) => s.length > 0);
+    } else {
+      features = ["health"];
+    }
+  } else if (bpRec.blueprint.featureTemplate && (!features || features.length === 0)) {
+    features = ["health"];
+  }
+
   assertCompatibility(bpRec, maturity, packRecs, catalogue);
 
   const mergedValues: Record<string, Primitive> = {

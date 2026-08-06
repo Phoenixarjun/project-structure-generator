@@ -1,0 +1,7 @@
+{
+  "kafka": {
+    "brokers": ["${KAFKA_BROKER:localhost:9092}"],
+    "clientId": "${KAFKA_CLIENT_ID:app-client}",
+    "groupId": "${KAFKA_GROUP_ID:app-group}"
+  }
+}

@@ -8,10 +8,15 @@
     "projectTypes": ["backend-service", "frontend-application", "cli", "library", "worker"],
     "languages": ["python", "java", "go", "typescript"]
   },
-  "directories": [
+  "entries": [
     {
       "type": "directory",
       "path": "tests/integration"
+    },
+    {
+      "type": "file",
+      "path": "tests/integration/test_integration.py",
+      "source": "template/test_integration.py"
     }
   ]
 }

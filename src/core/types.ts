@@ -114,6 +114,7 @@ export interface PackManifest {
   variables?: BlueprintVariable[] | undefined;
   directories?: BlueprintDirectoryEntry[] | undefined;
   files?: BlueprintFileEntry[] | undefined;
+  entries?: BlueprintEntry[] | undefined;
   contributions?: ExtensionPointContribution[] | undefined;
 }
 
@@ -188,6 +189,7 @@ export interface Blueprint {
     variables?: string[] | undefined;
     directories?: BlueprintDirectoryEntry[] | undefined;
     files?: BlueprintFileEntry[] | undefined;
+    entries?: BlueprintEntry[] | undefined;
   } | undefined;
   metadata?: BlueprintMetadata | undefined;
 }
