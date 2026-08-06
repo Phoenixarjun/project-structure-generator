@@ -1,7 +1,0 @@
-{
-  "opentelemetry": {
-    "serviceName": "${OTEL_SERVICE_NAME:my-fastapi-app}",
-    "exporterEndpoint": "${OTEL_EXPORTER_OTLP_ENDPOINT:http://localhost:4317}",
-    "samplingRatio": 1.0
-  }
-}

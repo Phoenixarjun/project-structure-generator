@@ -1,8 +1,0 @@
-{
-  "version": 1,
-  "formatters": {
-    "json": {
-      "format": "%(asctime)s %(levelname)s %(name)s %(message)s"
-    }
-  }
-}
