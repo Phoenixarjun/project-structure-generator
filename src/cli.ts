@@ -158,8 +158,12 @@ async function main(): Promise<void> {
   }
 
   if (command === "create") {
-    const positionalPreset = args.positionals[0];
-    const positionalOutput = args.positionals[1];
+    let positionalPreset = args.positionals[0];
+    let positionalOutput = args.positionals[1];
+    if (positionalPreset && (positionalPreset.startsWith(".") || positionalPreset.includes("/") || positionalPreset.includes("\\"))) {
+      positionalOutput = positionalPreset;
+      positionalPreset = undefined;
+    }
     await runCreate({
       presetId: flag(args, "preset", "p") ?? positionalPreset,
       profileId: flag(args, "profile"),
@@ -184,8 +188,12 @@ async function main(): Promise<void> {
   }
 
   if (command === "plan") {
-    const positionalPreset = args.positionals[0];
-    const positionalOutput = args.positionals[1];
+    let positionalPreset = args.positionals[0];
+    let positionalOutput = args.positionals[1];
+    if (positionalPreset && (positionalPreset.startsWith(".") || positionalPreset.includes("/") || positionalPreset.includes("\\"))) {
+      positionalOutput = positionalPreset;
+      positionalPreset = undefined;
+    }
     await runPlan({
       presetId: flag(args, "preset", "p") ?? positionalPreset,
       profileId: flag(args, "profile"),
