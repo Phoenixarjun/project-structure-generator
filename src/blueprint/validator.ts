@@ -122,9 +122,18 @@ function validateEntry(entry: BlueprintEntry, variables: Set<string>, paths: Set
   }
 }
 
+const forbiddenHookKeys = ["scripts", "hooks", "postInstall", "preInstall", "command", "exec", "shell"];
+
 export function validateBlueprint(value: unknown, manifestPath = BLUEPRINT_FILE_NAME): Blueprint {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     fail(`${manifestPath} must contain a JSON object`);
+  }
+
+  const rawObj = value as Record<string, unknown>;
+  for (const key of forbiddenHookKeys) {
+    if (rawObj[key] !== undefined) {
+      fail(`Blueprint manifest contains forbidden shell hook property: ${key}`);
+    }
   }
 
   const blueprint = value as Blueprint;
