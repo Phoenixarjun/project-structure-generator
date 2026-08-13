@@ -65,7 +65,7 @@
   },
   "homepage": "https://github.com/PhoenixArjun/project-structure-generator#readme",
   "devDependencies": {
-    "@types/node": "^24.0.0",
+    "@types/node": "^26.2.0",
     "typescript": "6.0.3"
   }
 }
