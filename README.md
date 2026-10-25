@@ -1,5 +1,7 @@
 <div align="center">
 
+<img width="1254" height="1254" alt="project-structure-generator Logo" src="https://github.com/user-attachments/assets/c14b7f1a-addc-4aa5-badc-a27db426bdb7" />
+
 # PROJECT STRUCTURE GENERATOR
 
 ### One command. One approved structure. Every project starts consistently.
